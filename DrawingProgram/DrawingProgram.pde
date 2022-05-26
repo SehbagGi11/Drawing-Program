@@ -1,12 +1,12 @@
 //Global Variables
-Boolean pen=false;
+Boolean marker=false;
 //
 float ExitX, ExitY, ExitWidth, ExitHeight;
 float Text2X, Text2Y, Text2Width, Text2Height;
 int reset=1;
 color white=255, resetColour=white, red=#FF0303, black=0, ExitColour;
 String Exit = "EXIT";
-String Text2 = "Great";
+String Text2 = "Lovely";
 //
 PFont font;
 int initialFontSize=55;
@@ -16,6 +16,7 @@ void setup() {
   //
   //Mandatory: Wrong displayOrientation should break app, feedback to console and CANVAS
   size(1800, 1400); //fullScreen, displayWidth, displayHeight
+  //fullScreen();
   //
   Population();
   //
@@ -29,8 +30,8 @@ void draw() {
   if ( canvo==true ) CANVAS();
   //
   //Drawing Tools
-  if ( pen==true && mouseX>=canvasX && mouseX<=canvasX+canvasWidth && mouseY>=canvasY && mouseY<=canvasY+canvasHeight ) line( mouseX, mouseY, pmouseX, pmouseY ) ;//End Pen
-  if ( pen==true && mouseX>=canvasX && mouseX<=canvasX+canvasWidth && mouseY>=canvasY && mouseY<=canvasY+canvasHeight ) ellipse ( mouseX, mouseY,  circleDiameter, circleDiameter); //Circle Drawing Tool
+  //if ( ... ==true && mouseX>=canvasX && mouseX<=canvasX+canvasWidth && mouseY>=canvasY && mouseY<=canvasY+canvasHeight ) line( mouseX, mouseY, pmouseX, pmouseY ) ;//End ...
+  if ( marker==true && mouseX>=ItLX && mouseX<=ItLX+ItLW && mouseY>=ItLY && mouseY<=ItLY+ItLH ) ellipse ( mouseX, mouseY,  circleDiameter, circleDiameter); //Circle Drawing Tool
   //
   //Exit HoverOver
   if ( mouseX>=ExitX && mouseX<=ExitX+ExitWidth && mouseY>=ExitY && mouseY<=ExitY+ExitHeight ) {
@@ -69,10 +70,10 @@ void keyPressed() {
 //
 void mousePressed() {
   if (mouseX>=canvasX && mouseX<=canvasX+canvasWidth && mouseY>=canvasY && mouseY<=canvasY+canvasHeight) {
-    if (pen == false) {
-      pen = true;
+    if (marker == false) {
+      marker = true;
     } else {
-      pen = false;
+      marker = false;
     }//End draw Boolean
   }//Button is paper (Drawing surface/canvas)
   //
