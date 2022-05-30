@@ -6,7 +6,7 @@ float Text2X, Text2Y, Text2Width, Text2Height;
 int reset=1;
 color white=255, resetColour=white, red=#FF0303, black=0, ExitColour;
 String Exit = "EXIT";
-String Text2 = "Lovely";
+String Text2 = "Noice";
 //
 PFont font;
 int initialFontSize=55;
@@ -33,25 +33,9 @@ void draw() {
   //if ( ... ==true && mouseX>=canvasX && mouseX<=canvasX+canvasWidth && mouseY>=canvasY && mouseY<=canvasY+canvasHeight ) line( mouseX, mouseY, pmouseX, pmouseY ) ;//End ...
   if ( marker==true && mouseX>=ItLX && mouseX<=ItLX+ItLW && mouseY>=ItLY && mouseY<=ItLY+ItLH ) ellipse ( mouseX, mouseY,  circleDiameter, circleDiameter); //Circle Drawing Tool
   //
-  //Exit HoverOver
-  if ( mouseX>=ExitX && mouseX<=ExitX+ExitWidth && mouseY>=ExitY && mouseY<=ExitY+ExitHeight ) {
-    ExitColour = red;
-  } else {
-    ExitColour = black;
-  }//End Exit HoverOver
-  fill(ExitColour);
-  noStroke();
-  rect(ExitX, ExitY, ExitWidth, ExitHeight);
-  stroke(reset);
-  fill(resetColour); //white:not nightMode
-  //
-  //Text, Exit Button
-  fill(black); //Ink
-  textAlign (CENTER, CENTER); //Align X+Y, see Processing.org / Reference
-  //Values: [LEFT | CENTER | RIGHT] , [TOP | CENTER | BOTTOM | BASELINE]
-  size = 25; //Change units until it fits
-  textFont(font, size);
-  text(Exit, ExitX, ExitY, ExitWidth, ExitHeight);
+  hoverOverExit();
+  exitButton();
+  textExitButton();
   //
   //Second Rectangle with More Text
   fill(white);
