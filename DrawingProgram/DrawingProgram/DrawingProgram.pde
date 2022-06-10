@@ -16,7 +16,7 @@ void setup() {
   fullScreen();
   assign();
   //Background
-  background(background);
+  //background(background);
   //Drawing Surface
   stroke(black);
   strokeWeight(1);
