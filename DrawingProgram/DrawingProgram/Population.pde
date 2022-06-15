@@ -1,124 +1,131 @@
-void assign() {
+void variablePopulation() {
+  ink = black;
+  canvasColour = white;
+  angle = 0;
+
   //Colours
-  red = #F40000;
-  orange = #F48100;
-  yellow = #FFE932;
-  green = #24C117;
-  blue = #2D82F5;
-  purple = #9D2DF5;
-  pink = #FF3A88;
-  brown = #74461C;
-  black = #000000;
-  grey = #646464;
-  white = #FFFFFF;
-  background = #CBCBCB;
-  //Drawing Surface
-  drawingSurfaceX = displayWidth*0;
-  drawingSurfaceY = displayHeight*1/4;
-  drawingSurfaceWidth = displayWidth;
-  drawingSurfaceHeight = displayHeight*3/4;
-  //GreySpace
-  greySpaceX = displayWidth*0;
-  greySpaceY = displayHeight*0;
-  greySpaceWidth = displayWidth;
-  greySpaceHeight = displayHeight*1/4;
-  //Font
-  font = createFont ("Jomolhari", 55);
-  //Dropdown Menu Buttons
-  menuButtonX = displayWidth*0;
-  menuButtonY = displayHeight*0;
-  menuButtonWidth = resetMenuButtonWidth = displayWidth*10/100;
-  menuButtonHeight = displayHeight*10/100;
-  resetButtonX = saveButtonX = exitButtonX = resetMenuButtonX = displayWidth*0;
-  resetButtonY = resetMenuButtonY = displayHeight*10/100;
-  saveButtonY = displayHeight*15/100;
-  exitButtonY = displayHeight*20/100;
-  resetButtonWidth = saveButtonWidth = exitButtonWidth = displayWidth*10/100;
-  resetButtonHeight = saveButtonHeight = exitButtonHeight = displayHeight*5/100;
-  resetMenuButtonHeight = displayHeight*15/100;
-  //Dropdown Colour Buttons
-  colourButtonX = displayWidth*10/100;
-  colourButtonY = displayHeight*0;
-  colourButtonWidth = resetColourButtonWidth = displayWidth*10/100;
-  colourButtonHeight = displayHeight*10/100;
-  redButtonX = greenButtonX = pinkButtonX = greyButtonX = resetColourButtonX = displayWidth*10/100;
-  orangeButtonX = blueButtonX = brownButtonX = whiteButtonX = displayWidth*40/300;
-  yellowButtonX = purpleButtonX = blackButtonX = randomButtonX = displayWidth*50/300;
-  redButtonY = orangeButtonY = yellowButtonY = resetColourButtonY = displayHeight*10/100;
-  greenButtonY = blueButtonY = purpleButtonY = displayHeight*55/400;
-  pinkButtonY = brownButtonY = blackButtonY = displayHeight*70/400;
-  greyButtonY = whiteButtonY = randomButtonY = displayHeight*85/400;
-  redButtonWidth = orangeButtonWidth = yellowButtonWidth = greenButtonWidth = blueButtonWidth = purpleButtonWidth = pinkButtonWidth = brownButtonWidth = blackButtonWidth = greyButtonWidth = whiteButtonWidth = randomButtonWidth = colourButtonWidth*1/3;
-  redButtonHeight = orangeButtonHeight = yellowButtonHeight = greenButtonHeight = blueButtonHeight = purpleButtonHeight = pinkButtonHeight = brownButtonHeight = blackButtonHeight = greyButtonHeight = whiteButtonHeight = randomButtonHeight = displayHeight*15/400;
-  resetColourButtonHeight = displayHeight*15/100;
-  randomImage = loadImage("colourSpectrumWave.png"); //1500 x 1500 Square
-  //Dropdown Stroke Size Buttons
-  strokeButtonX = displayWidth*20/100;
-  strokeButtonY = displayHeight*0;
-  strokeButtonWidth = displayWidth*10/100;
-  strokeButtonHeight = displayHeight*10/100;
-  thickButtonX = mediumButtonX = thinButtonX = resetStrokeButtonX = displayWidth*20/100;
-  thickButtonY = resetStrokeButtonY = displayHeight*10/100;
-  mediumButtonY = displayHeight*15/100;
-  thinButtonY = displayHeight*20/100;
-  thickButtonWidth = mediumButtonWidth = thinButtonWidth = resetStrokeButtonWidth = displayWidth*10/100;
-  thickButtonHeight = mediumButtonHeight = thinButtonHeight = displayHeight*5/100;
-  resetStrokeButtonHeight = displayHeight*15/100;
-  // Dropdown Shape Buttons
-  shapeButtonX = displayWidth*30/100;
-  shapeButtonY = displayHeight*0;
-  shapeButtonWidth = resetShapeButtonWidth = displayWidth*10/100;
-  shapeButtonHeight = displayHeight*10/100;
-  lineButtonX = circleButtonX = resetShapeButtonX = displayWidth*30/100;
-  squareButtonX = triangleButtonX = displayWidth*35/100;
-  lineButtonY = squareButtonY = resetShapeButtonY = displayHeight*10/100;
-  circleButtonY = triangleButtonY = displayHeight*35/200;
-  lineButtonWidth = circleButtonWidth = squareButtonWidth = triangleButtonWidth = displayWidth*5/100;
-  lineButtonHeight = circleButtonHeight = squareButtonHeight = triangleButtonHeight = displayHeight*15/200;
-  resetShapeButtonHeight = displayHeight*15/100;
-  //Dropdown Eraser Buttons
-  eraserButtonX = displayWidth*40/100;
-  eraserButtonY = displayHeight*0;
-  eraserButtonWidth = displayWidth*10/100;
-  eraserButtonHeight = displayHeight*10/100;
-  largeButtonX = medButtonX = smallButtonX = resetEraserButtonX = displayWidth*40/100;
-  largeButtonY = resetEraserButtonY = displayHeight*10/100;
-  medButtonY = displayHeight*15/100;
-  smallButtonY = displayHeight*20/100;
-  largeButtonWidth = medButtonWidth = smallButtonWidth = resetEraserButtonWidth = displayWidth*10/100;
-  largeButtonHeight = medButtonHeight = smallButtonHeight = displayHeight*5/100;
-  resetEraserButtonHeight = displayHeight*15/100;
-  //Dropdown Background Buttons
-  backgroundButtonX = displayWidth*50/100;
-  backgroundButtonY = displayHeight*0;
-  backgroundButtonWidth = resetBackgroundButtonWidth = displayWidth*10/100;
-  backgroundButtonHeight = displayHeight*10/100;
-  redFillButtonX = greenFillButtonX = pinkFillButtonX = greyFillButtonX = resetBackgroundButtonX = displayWidth*50/100;
-  orangeFillButtonX = blueFillButtonX = brownFillButtonX = whiteFillButtonX = displayWidth*160/300;
-  yellowFillButtonX = purpleFillButtonX = blackFillButtonX = randomFillButtonX = displayWidth*170/300;
-  redFillButtonY = orangeFillButtonY = yellowFillButtonY = resetBackgroundButtonY = displayHeight*10/100;
-  greenFillButtonY = blueFillButtonY = purpleFillButtonY = displayHeight*55/400;
-  pinkFillButtonY = brownFillButtonY = blackFillButtonY = displayHeight*70/400;
-  greyFillButtonY  = whiteFillButtonY = randomFillButtonY = displayHeight*85/400;
-  redFillButtonWidth = orangeFillButtonWidth = yellowFillButtonWidth = greenFillButtonWidth = blueFillButtonWidth = purpleFillButtonWidth = pinkFillButtonWidth = brownFillButtonWidth = blackFillButtonWidth = greyFillButtonWidth = whiteFillButtonWidth = randomFillButtonWidth = backgroundButtonWidth*1/3;
-  redFillButtonHeight = orangeFillButtonHeight = yellowFillButtonHeight = greenFillButtonHeight = blueFillButtonHeight = purpleFillButtonHeight = pinkFillButtonHeight = brownFillButtonHeight = blackFillButtonHeight = greyFillButtonHeight = whiteFillButtonHeight = randomFillButtonHeight = displayHeight*15/400;
-  resetBackgroundButtonHeight = displayHeight*15/100;
-  //Dropdown Music Buttons
-  musicButtonX = displayWidth*60/100;
-  musicButtonY = displayHeight*0;
-  musicButtonWidth = resetMusicButtonWidth = displayWidth*30/100;
-  musicButtonHeight = displayHeight*10/100;
-  rewindButtonX = skipBButtonX = resetMusicButtonX = displayWidth*60/100;
-  playButtonX = stopButtonX = displayWidth*70/100;
-  nextButtonX = skipFButtonX = displayWidth*80/100;
-  rewindButtonY = playButtonY = nextButtonY = resetMusicButtonY = displayHeight*10/100;
-  skipBButtonY = stopButtonY = skipFButtonY = displayHeight*35/200;
-  rewindButtonWidth = playButtonWidth = nextButtonWidth = skipBButtonWidth = stopButtonWidth = skipFButtonWidth = displayWidth*10/100;
-  rewindButtonHeight = playButtonHeight = nextButtonHeight = skipBButtonHeight = stopButtonHeight = skipFButtonHeight = displayHeight*15/200;
-  resetMusicButtonHeight = displayHeight*15/100;
-  //Dropdown Mute Buttons
-  muteButtonX = displayWidth*90/100;
-  muteButtonY = displayHeight*0;
-  muteButtonWidth = displayWidth*10/100;
-  muteButtonHeight = displayHeight*10/100;
-} //End Assign()
+  backgroundColour = #A8D0E6;
+  salmon = #F76C6C;
+  darkBlue = #24305E;
+  blue = #6392bf;
+  lightGray = #a5a5a5;
+  //Colour Palette Colours
+  gray = #838383;
+  red = #c44645;
+  blue2 = #6986d5;
+  purple = #ba8fd0;
+  pink = #dc99ad;
+  orange = #e79775;
+  green = #418b52;
+  teal = #8bd4c0;
+  lime = #b4f5a1;
+  yellow = #fff99f;
+
+
+  //Tool Sizes
+  penThickness = 2;
+  eraserThickness = 25;
+
+
+  //Canvas
+  canvasX = width*9/30;
+  canvasY = height*2/15;
+  canvasWidth = width*20/30;
+  canvasHeight = height*11/15;
+
+
+  //Quit Button
+  quitButtonX = width*57/60;
+  quitButtonY = height*1/45;
+  quitButtonWidth = width*1/30;
+  quitButtonHeight = height*1/20;
+
+
+  //Line Art
+  pic = loadImage ("../Images/totoro.PNG"); //Dimensions: 660 Width, 962 Height
+  float imageWidthRatio = 660.0/660.0; 
+  float imageHeightRatio = 962.0/660.0;
+  imageX = canvasX+ width*1/5;
+  imageY = canvasY;
+  imageWidth = (canvasHeight*imageWidthRatio)*14/20;
+  imageHeight = (canvasHeight*imageHeightRatio)*14/20;
+  pic2 = loadImage ("../Images/pooh.png"); //Dimensions: 801 Width, 1024 Height
+  float imageWidthRatio2 = 801.0/801.0; 
+  float imageHeightRatio2 = 1024.0/801.0;
+  imageX2 = canvasX+ width*1/5;
+  imageY2 = canvasY+ height*1/50;
+  imageWidth2 = (canvasHeight*imageWidthRatio2)*15/20;
+  imageHeight2 = (canvasHeight*imageHeightRatio2)*15/20; 
+
+
+  //Top Row Buttons
+  topRowY = height*1/30;
+  topRowWidth = width*7/60;
+  topRowHeight = height*2/30;
+  restartX = width*47/60;
+  lineArt2X = width*38/60;
+  lineArtX = width*29/60;
+  eraserButtonX = width*20/60;
+  drawingToolsX = width*11/60;
+  backgroundColourX = width*2/60;
+  //Drop Down Menus
+  canvasColourDropdownX = backgroundColourX;
+  canvasColourDropdownY = topRowY+topRowHeight;
+  canvasColourDropdownWidth = width*13/60;
+  canvasColourDropdownHeight = height*6/30;
+  canvasColourDropdownX2 = canvasColourDropdownX+canvasColourDropdownWidth*1/4;
+  canvasColourDropdownX3 = canvasColourDropdownX+canvasColourDropdownWidth*2/4;
+  canvasColourDropdownX4 = canvasColourDropdownX+canvasColourDropdownWidth*3/4;
+  canvasColourDropdownY2 = canvasColourDropdownY+canvasColourDropdownHeight*1/3;
+  canvasColourDropdownY3 = canvasColourDropdownY+canvasColourDropdownHeight*2/3;
+
+
+  //Left Side Buttons
+  leftRowX = width*1/30;
+  leftRowWidth = width*6/30;
+  leftRowHeight = height*4/30;
+  leftRowChoicesWidth = leftRowWidth/5;
+  leftRowChoicesHeight = leftRowHeight-leftRowHeight*2/5;
+  //
+  eraserSizesY = height*5/30;
+  shapesY = height*11/30;
+  brushSizesY = height*17/30;
+  inkColoursY = height*23/30;
+  colourChoicesWidth = leftRowWidth/6;
+  colourChoicesHeight = leftRowChoicesHeight/2;
+  //Enlarged Hover Over
+
+
+  //Music Controls
+  musicControlsY = height*27/30;
+  musicControlsHeight = height*2/30;
+  //
+  //Images Below all have the Dimensions: 300 Width, 300 Height;
+  playlistIcon = loadImage ("../Images/playlist1.png"); 
+  playlistIcon2 = loadImage ("../Images/playlist2.png"); 
+  loopIcon = loadImage ("../Images/loop1.png"); 
+  loopIcon2 = loadImage ("../Images/loop2.png"); 
+  pauseIcon = loadImage ("../Images/pause1.png"); 
+  pauseIcon2 = loadImage ("../Images/pause2.png"); 
+  playIcon = loadImage ("../Images/play1.png"); 
+  playIcon2 = loadImage ("../Images/play2.png"); 
+  rewindIcon = loadImage ("../Images/rewind1.png"); 
+  rewindIcon2 = loadImage ("../Images/rewind2.png"); 
+  //
+  musicButtonWidth = width*4/90;
+  float imageWidthRatio3 = 300.0/300.0; 
+  float imageHeightRatio3 = 300.0/300.0;
+  imageWidth3 = canvasHeight*imageWidthRatio3;
+  imageHeight3 = canvasHeight*imageHeightRatio3;
+  //
+  playlistX = width*26/90;
+  loopX = width*32/90;
+  playPauseX = width*38/90;
+  restartMusicX = width*83/90;
+  //
+  //Song 1-3 Buttons
+  songWidth = width*11/90;
+  song1X = width*44/90;
+  song2X = width*57/90;
+  song3X = width*70/90;
+}
