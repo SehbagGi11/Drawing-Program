@@ -1,104 +1,540 @@
-import ddf.minim.*;
-import ddf.minim.analysis.*;
-import ddf.minim.effects.*;
-import ddf.minim.signals.*;
-import ddf.minim.spi.*;
-import ddf.minim.ugens.*;
+//Global Variables
+float appWidth, appHeight;
+float originX, originY;
+color whiteReset=#FFFFFF, black=#000000, greyReset=#CCCCCC;
+//color quitButtonColor, quitTextColor;
+int reset=1;
 
-// Global Variables
-Minim minim;
-int numberOfSongs = 3;
-AudioPlayer[] song = new AudioPlayer[numberOfSongs];
-AudioMetaData[] songMetaData = new AudioMetaData[numberOfSongs];
-AudioPlayer click;
-int currentSong = numberOfSongs - numberOfSongs;
+//PaperButton
+float BUTTONpaperX, BUTTONpaperY, BUTTONpaperWidth, BUTTONpaperHeight;
+PImage BUTTONpaperImage;
+int BUTTONpaperImageWidth, BUTTONpaperImageHeight;
+int largerPaperImageDimension, smallerPaperImageDimension;
+float BUTTONpaperIMAGEaDJUSTEDWidth, BUTTONpaperIMAGEaDJUSTEDHeight;
+Boolean BUTTONpaperImageWidthLARGER=false, BUTTONpaperImageHeightLARGER=false;
+float paperImageWidthRatio=0.0, paperImageHeightRatio=0.0;
+
+
+//Paper
+float drawingSurfaceX, drawingSurfaceY, drawingSurfaceWidth, drawingSurfaceHeight;
+float  drawingDiameter;
+Boolean paper=false;
 //
-color ink, black = #000000, white = #FFFFFF;
-color backgroundColour, canvasColour, salmon, darkBlue, blue, lightGray;
-color gray, red, blue2, purple, pink, orange, green, teal, lime, yellow;
-PFont buttonFont;
-float canvasX, canvasY, canvasWidth, canvasHeight, quitButtonX, quitButtonY, quitButtonWidth, quitButtonHeight, canvasColourDropdownX, canvasColourDropdownY, canvasColourDropdownWidth, canvasColourDropdownHeight;
-float topRowY, topRowWidth, topRowHeight, restartX, lineArtX, lineArt2X, eraserButtonX, drawingToolsX, backgroundColourX;
-float canvasColourDropdownX2, canvasColourDropdownX3, canvasColourDropdownX4, canvasColourDropdownX5, canvasColourDropdownY2, canvasColourDropdownY3;
-float leftRowX, leftRowWidth, leftRowHeight, leftRowChoicesWidth, leftRowChoicesHeight, eraserSizesY, shapesY, brushSizesY, inkColoursY, colourChoicesWidth, colourChoicesHeight;
-float musicControlsY, musicControlsHeight, musicButtonWidth, playlistX, loopX, playPauseX, restartMusicX, song1X, song2X, song3X, songWidth;
-float penThickness, eraserThickness, angle;
-float imageX, imageY, imageWidth, imageHeight, imageX2, imageY2, imageWidth2, imageHeight2, imageWidth3, imageHeight3;
-float song1name, song2name, song3name;
-PImage pic, pic2, playlistIcon, playlistIcon2, loopIcon, loopIcon2, pauseIcon, pauseIcon2, playIcon, playIcon2, rewindIcon, rewindIcon2;
-Boolean draw=false, drawOn=false, sprayPaint=false, sprayPaintOn=false, lineArt1= false, lineArt2= false, eraser=false, eraserOn=false, dropdown2=false, dropdown1=false, circleOn=false, circle=false, squareOn=false, square=false, triangleOn=false, triangle=false; 
-Boolean canvasBlack=false, canvasWhite=false, canvasGray=false, canvasRed=false, canvasBlue=false, canvasPurple=false, canvasPink=false, canvasOrange=false, canvasGreen=false, canvasTeal=false, canvasLime=false, canvasYellow=false; //Canvas Background Colour 
-Boolean song1On=false, song2On=false, song3On=false, playlistOn=false, loopOn=false;
+//Tool Bar: want it to be a rounded/dark square below the painting surface 
+float toolBarX, toolBarY, toolBarWidth, toolBarHeight;
+int roundedEdges;
+color toolbarLining, toolbarFILLING;
+//
+/*
+//Quit Button
+ String quitButtonText="Exit Program";
+ PFont quitButtonFont; //CAN'T POPULATE A FONT IN THE GLOBAL VARIABLES
+ float quitButtonX, quitButtonY, quitButtonWidth, quitButtonHeight;
+ */
+//
+//Second Button
+float secondTextX, secontTextY, secondTextWidth, secondTextHeight;
+//color secondTextButtonColor=#B2F5A6;
+//String secondTextButtonText="Start Drawing";
+//PFont secondTextButtonFont;
+//
+//Color Pallete Variables
+float ColorChoicesBoxX, ColorChoicesBoxY, ColorChoicesBoxWidth, ColorChoicesBoxHeight;
+float BUTTONredDrawingColorX, BUTTONredDrawingColorY, colorButtonWidth, colorButtonHeight;
+float BUTTONorangeDrawingColorX, BUTTONorangeDrawingColorY;
+float BUTTONyellowDrawingColorX, BUTTONyellowDrawingColorY;
+float BUTTONgreenDrawingColorX, BUTTONgreenDrawingColorY;
+float BUTTONblueDrawingColorX, BUTTONblueDrawingColorY;
+float BUTTONpurpleDrawingColorX, BUTTONpurpleDrawingColorY;
+float BUTTONgreyDrawingColorX, BUTTONgreyDrawingColorY;
+float BUTTONblackDrawingColorX, BUTTONblackDrawingColorY;
+/*
+float red1X, red1Y;
+ float orange1X, orange1Y;
+ float yellow1X, yellow1Y;
+ float green1X, green1Y;
+ float blueX, blue1Y;
+ float purple1X, purple1Y;
+ float black1X, black1Y;
+ float grey1X, grey1Y;
+ float brownX, brown1Y;
+ */
 
-void setup() {
-  fullScreen(); //landscape
-  minimSetup();
-  variablePopulation();
-  textSetup();
-  canvas();
-}
+color redBUTTONcolor=#FF081E, orangeBUTTONcolor=#FF8C1E, yellowBUTTONcolor=#FFF11E, greenBUTTONcolor=#5BBC00;
+color blueBUTTONcolor=#00BDF3, purpleBUTTONcolor=#7A1A7D, greyBUTTONcolor=greyReset, blackBUTTONcolor=black;
+color colorOfDrawingTool;
+Boolean colorChoicesON=false;
+//
+//Background Image Buttons
+float BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight;
+float BUTTONbackgroundImage1X, BUTTONbackgroundImage1Y;
+float BUTTONbackgroundImage2X, BUTTONbackgroundImage2Y;
+float BUTTONbackgroundImage3X, BUTTONbackgroundImage3Y;
+Boolean backgroundImage1ON=false, backgroundImage2ON=false, backgroundImage3ON=false, originalGreyBackgroundON=true;
 
-void draw() {
-  pen();
-  sprayPaint();
-  eraser();
-  circles();
-  squares();
-  triangles();
-  canvasColour(); //if the ink is the same as the canvas colour you are changing it to, the ink will change to black (unless the background colour is being changed to black, then the ink will change to be white)
-  boxes(); //prevents the drawing from getting out of the canvas, even when the mouse is moving quickly //canvas tab
+//
+//
+// Drawing Tool Buttons
+float drawingButtonWidth, drawingButtonHeight;
+float eraserButtonX, eraserButtonY; 
+float pencilButtonX, pencilButtonY;
+PImage BUTTONpencilImage;
+boolean drawOnPaper=false, draw=false;
+//
+//Background image
+float backgroundImage1WidthEnlargedAdjusted, backgroundImage1HeightEnlargedAdjusted, backgroundImage1WidthMinimizedAdjusted, backgroundImage1HeightMinimizedAdjusted;
+float backgroundImage2WidthEnlargedAdjusted, backgroundImage2HeightEnlargedAdjusted, backgroundImage2WidthMinimizedAdjusted, backgroundImage2HeightMinimizedAdjusted;
+float backgroundImage3WidthEnlargedAdjusted, backgroundImage3HeightEnlargedAdjusted, backgroundImage3WidthMinimizedAdjusted, backgroundImage3HeightMinimizedAdjusted;
+float backgroundImage1WidthRatio=0.0, backgroundImage1HeightRatio=0.0, backgroundImage2WidthRatio=0.0, backgroundImage2HeightRatio=0.0, backgroundImage3WidthRatio=0.0, backgroundImage3HeightRatio=0.0;
+int largerbackgroundImage1Dimension, smallerbackgroundImage1Dimension, largerbackgroundImage2Dimension, smallerbackgroundImage2Dimension, largerbackgroundImage3Dimension, smallerbackgroundImage3Dimension;
+PImage backgroundImage1, backgroundImage2, backgroundImage3;
+float backgroundImage1X, backgroundImage1Y, backgroundImage2X, backgroundImage2Y, backgroundImage3X, backgroundImage3Y;
+float backgroundImage1Width, backgroundImage1Height, backgroundImage2Width, backgroundImage2Height, backgroundImage3Width, backgroundImage3Height;
+color red1=#ED1C24, yellow1=#FAE68D, green1=#1D4B3E;
+color peachy=#F5D9C3, yellow2=#FFE44D, yell0w3=#FED480, blue1=#C2E8D1, blue2=#79D5AC, purple1=#695583, purple2=#AC90A7;
+color orangeRed1=#BD3328, orange1=#FE845D, orange2=#FA735D, orange3=#F49730, orange4=#C75E25, orange5=#FFA859;
+color COLORIMAGE1toolbarLining=#DD979F;
+color COLORIMAGE2toolbarLining=blue2;
+color COLORIMAGE3toolbarLining=green1;
+color COLORIMAGE1toolbarFILLING=peachy;
+color COLORIMAGE2toolbarFILLING=yell0w3;
+color COLORIMAGE3toolbarFILLING=orange5;
 
-  //Top Row Buttons
-  quitButton();
-  restartCanvas();
-  lineArt();
-  eraserButton();
-  drawingTools();
-  backgroundColour();
 
-  //Left Row Buttons
-  eraserSizes();
-  shapes();
-  brushSizes();
-  inkColours();
+//
+void setup () {
+  fullScreen();//NEED TO CHANGE TO fullScreen();, which means everything else will need to be changed to displayWidth
+  originX=width*0;
+  originY=height*0;
+  appWidth=width;
+  appHeight=height;
+  //Display Orientation: Landscape (displayWidth>displayHeight), not portrait or square
+  //If our width is larger than our height we are in landscape mode
+  //if  ( displayWidth .+ displayHeight) {println("landscape or Square");} else {println("Portrait");}
+  String ls="Landscape or Square", p="portrait", DO="Display Orientation", instruction="turn your phone kiddo";
+  String orientation = (appWidth >= appHeight) ? ls:p; //Ternary operator
+  println(DO, orientation);
 
-  //Music Controls
-  playlistLoop();
-  playlistButton();
-  loopButton();
-  playPauseButton();
-  songOptions();
-  restartMusic();
+  if (orientation==ls) {
+    println("Good to go :)");
+  } else {
+    println(instruction);
+    appWidth *=0; //this is called an assingment operator; this means appWidth=appWidth*0, thi
+    appHeight *=0;
+  }
+  println("App Geometry is:", "\t AppWidth:", appWidth, "\t AppHeight:", appHeight);
+  //Calucating larer Dimension and aspect ratio
+  ChoosingLargerDimensionCalculatingAspectRatios();
+  //Paper 
 
-  //Drop Down Menus and Enlarged Options //Placed at the end so that when open, the covers the other buttons/background
-  toolsDropdown();
-  canvasColourDropdown();
-}
+  drawingSurfaceWidth = width*1/2; 
+  drawingSurfaceHeight = height*3/4;
+  drawingSurfaceX = (width*1/2)-(drawingSurfaceWidth*1/2);
+  drawingSurfaceY =appHeight*1/8;
+  drawingDiameter=width*1/100;
+  rect(drawingSurfaceX, drawingSurfaceY, drawingSurfaceWidth, drawingSurfaceHeight);
+  //Tool Bar: want it to be a rounded/dark square below the painting surface 
+  roundedEdges= height*1/50;
+  toolBarWidth= (drawingSurfaceWidth*1/4)*5/4;
+  toolBarHeight= drawingSurfaceHeight;
+  toolBarX=(appWidth*0)+ float(roundedEdges);
+  toolBarY=appHeight*1/8; 
+  //Background Buttons
+  BUTTONbackgroundImageWidth= (drawingSurfaceWidth*1/4)*1/2;
+  BUTTONbackgroundImageHeight= (drawingSurfaceWidth*1/4)*1/2;
+  BUTTONbackgroundImage1X=appWidth*0;
+  BUTTONbackgroundImage1Y=appHeight*0;
+  BUTTONbackgroundImage2X=(appWidth*0)+BUTTONbackgroundImageWidth;
+  BUTTONbackgroundImage2Y=(appHeight*0);
+  BUTTONbackgroundImage3X=(appWidth*0)+(BUTTONbackgroundImageWidth*2);
+  BUTTONbackgroundImage3Y=(appHeight*0);
+  //Images going inside background buttons
 
-void mousePressed() {
-  //Drawing On the Canvas
-  canvasPressed();
-  //Top Row
-  topRowMousePressed();
-  canvasColourPressed();
-  mainControlsPressed(); //Quit and restart button
-  //Left Row
-  eraserSizesPressed();
-  circlePressed();
-  squarePressed();
-  trianglePressed();
-  brushSizesPressed();
-  inkColourPressed();
-  //Music
-  playlistPressed();
-  loopPressed();
-  playlistLoop();
-  playPausePressed();
-  songsPressed();
-  rewindMusicPressed();
-}
+  backgroundImage1=loadImage("GOODCOPYbackgroundImage1.png");
+  backgroundImage2=loadImage("GOODCOPYbackgroundImage2.png");
+  backgroundImage3=loadImage("GOODCOPYbackgroundImage3.png");
 
-void keyPressed() {
-  if ( key == 'f' || key == 'F') song[currentSong].skip(10000); //10 seconds
-  if ( key == 'b' || key == 'B') song[currentSong].skip(-10000); //10 secondsbb
-}
+  backgroundImage1Width=236;
+  backgroundImage1Height=236;
+  backgroundImage2Width=1920;
+  backgroundImage2Height=1200;
+  backgroundImage3Width=785;
+  backgroundImage3Height=442;
+
+  backgroundImage1X=appWidth*0;
+  backgroundImage1Y=appHeight*0;
+  backgroundImage2X=appWidth*0;
+  backgroundImage2Y=appHeight*0;
+  backgroundImage3X=appWidth*0;
+  backgroundImage3Y=appHeight*0;
+
+  //Paper Button Variables
+  BUTTONpaperImage=loadImage("CROPPEDPaperButtonImage-129x172.jpg");
+  BUTTONpaperImageWidth=129; 
+  BUTTONpaperImageHeight=172;
+  BUTTONpaperIMAGEaDJUSTEDWidth=BUTTONpaperImageWidth*paperImageWidthRatio;
+  BUTTONpaperIMAGEaDJUSTEDHeight= BUTTONpaperImageHeight*paperImageHeightRatio;
+  BUTTONpaperWidth=BUTTONbackgroundImageWidth;
+  BUTTONpaperHeight=BUTTONbackgroundImageHeight;
+  BUTTONpaperX=toolBarX+float(roundedEdges*25/20);
+  BUTTONpaperY=toolBarY+float(roundedEdges);
+  /*
+  //Color Tool Box Activator population
+   
+   
+   BUTTONdisplayColorsX= BUTTONpaperX+BUTTONpaperWidth+(float(roundedEdges)*10/50);
+   BUTTONdisplayColorsY=BUTTONpaperY;
+   BUTTONdisplayColorsWidth=BUTTONpaperWidth;
+   BUTTONdisplayColorsHeight=BUTTONpaperHeight;
+   BUTTONdisplayColorsImage=loadImage("ColorPalette.png");
+   BUTTONdisplayColorsImageWidth=800;
+   BUTTONdisplayColorsImageHeight=800;
+   */
+
+  // Color Choices Box Population
+  ColorChoicesBoxHeight=BUTTONbackgroundImageHeight;
+  colorButtonWidth=BUTTONbackgroundImageWidth*1/4;
+  colorButtonHeight=ColorChoicesBoxHeight*1/2;
+  ColorChoicesBoxWidth=BUTTONbackgroundImageWidth;
+
+  ColorChoicesBoxX=BUTTONpaperX+BUTTONpaperWidth+(roundedEdges*1/2);
+  ColorChoicesBoxY=BUTTONpaperY;
+  BUTTONredDrawingColorX= ColorChoicesBoxX;
+  BUTTONredDrawingColorY= ColorChoicesBoxY;
+  BUTTONorangeDrawingColorX= ColorChoicesBoxX+colorButtonWidth;
+  BUTTONorangeDrawingColorY= ColorChoicesBoxY;
+  BUTTONyellowDrawingColorX= ColorChoicesBoxX+(colorButtonWidth*2);
+  BUTTONyellowDrawingColorY= ColorChoicesBoxY;
+  BUTTONgreenDrawingColorX= ColorChoicesBoxX+(colorButtonWidth*3);
+  BUTTONgreenDrawingColorY= ColorChoicesBoxY;
+  BUTTONblueDrawingColorX= ColorChoicesBoxX;
+  BUTTONblueDrawingColorY= ColorChoicesBoxY+colorButtonHeight;
+  BUTTONpurpleDrawingColorX= ColorChoicesBoxX+colorButtonWidth;
+  BUTTONpurpleDrawingColorY= ColorChoicesBoxY+colorButtonHeight;
+  BUTTONgreyDrawingColorX=ColorChoicesBoxX+(colorButtonWidth*2);
+  BUTTONgreyDrawingColorY=ColorChoicesBoxY+colorButtonHeight;
+  BUTTONblackDrawingColorX=ColorChoicesBoxX+(colorButtonWidth*3);
+  BUTTONblackDrawingColorY=ColorChoicesBoxY+colorButtonHeight;
+  
+  //Coloring Tools
+  drawingButtonWidth=(drawingSurfaceWidth*1/4)*1/2*1/2;
+  drawingButtonHeight=(drawingSurfaceWidth*1/4)*1/2*1/2;
+  pencilButtonX=BUTTONpaperX;
+  pencilButtonY=BUTTONpaperY+BUTTONpaperHeight+(roundedEdges);
+  BUTTONpencilImage=loadImage("BUTTONpencilimage.jpg");
+
+
+
+  /*
+  //Quit button
+   quitButtonFont= createFont("Microsoft Himalaya", 15);
+   quitButtonWidth=width*1/8;
+   quitButtonHeight=height*1/10;
+   quitButtonX=width*0;
+   quitButtonY=drawingSurfaceHeight-(quitButtonHeight);
+   //Second Text Button
+   secondTextX=width*0;
+   secontTextY=drawingSurfaceHeight-(quitButtonHeight*2);
+   secondTextWidth=quitButtonWidth;
+   secondTextHeight=quitButtonHeight;
+   secondTextButtonFont=createFont("Segoe UI Semibold Italic", 25);
+   */
+
+  //Types of Font
+  //String [] fontList=PFont.list();
+  // printArray(fontList);
+}//End setup
+// 
+void draw () {
+  //Grey Background code
+  if (originalGreyBackgroundON==true) {
+    background(greyReset);  
+    image(backgroundImage1, BUTTONbackgroundImage1X, BUTTONbackgroundImage1Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
+    image(backgroundImage2, BUTTONbackgroundImage2X, BUTTONbackgroundImage2Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
+    image(backgroundImage3, BUTTONbackgroundImage3X, BUTTONbackgroundImage3Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
+  } else {
+  }
+  //Background Image 1 code
+  backgroundImage1Draw();
+  //Background Image 2 Code
+  if (backgroundImage2ON==true) {
+    background(backgroundImage2); 
+    fill(greyReset);
+    rect(BUTTONbackgroundImage2X, BUTTONbackgroundImage2Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
+    fill(whiteReset);
+    image(backgroundImage1, BUTTONbackgroundImage1X, BUTTONbackgroundImage1Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
+    image(backgroundImage3, BUTTONbackgroundImage3X, BUTTONbackgroundImage3Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
+  } else {
+  }
+  //Background Image 3 Code
+  if (backgroundImage3ON==true) {
+    background(backgroundImage3); 
+    fill(greyReset);
+    rect(BUTTONbackgroundImage3X, BUTTONbackgroundImage3Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
+    fill(whiteReset);
+    image(backgroundImage1, BUTTONbackgroundImage1X, BUTTONbackgroundImage1Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
+    image(backgroundImage2, BUTTONbackgroundImage2X, BUTTONbackgroundImage2Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
+  } else {
+  }
+
+  //Tool Bar
+  ToolBarCode ();
+  //OutLine for background buttons
+  noFill();
+  rect(BUTTONbackgroundImage1X, BUTTONbackgroundImage1Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
+  rect(BUTTONbackgroundImage2X, BUTTONbackgroundImage2Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
+  rect(BUTTONbackgroundImage3X, BUTTONbackgroundImage3Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
+  //Paper Button Image
+  image(BUTTONpaperImage, BUTTONpaperX, BUTTONpaperY, BUTTONpaperWidth*75/100, BUTTONpaperHeight);
+  //Pencil Code
+  noFill();
+  noStroke();
+  rect(pencilButtonX,  pencilButtonY, drawingButtonWidth, drawingButtonHeight);
+  image(BUTTONpencilImage, pencilButtonX,  pencilButtonY, drawingButtonWidth, drawingButtonHeight);
+  fill(whiteReset);
+  stroke(black);
+
+  //Paper Button if statement
+  if (paper==true) {
+    if (originalGreyBackgroundON==true) {
+      originalGreyBackgroundON=false;
+      toolbarLining=black;
+      toolbarFILLING=whiteReset;
+    }
+    if (backgroundImage1ON==true) {
+      backgroundImage1ON=false;
+      fill(greyReset);
+      rect(BUTTONbackgroundImage1X, BUTTONbackgroundImage1Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
+      fill(whiteReset);
+      toolbarLining=COLORIMAGE1toolbarLining;
+      toolbarFILLING=COLORIMAGE1toolbarFILLING;
+    }
+    if ( backgroundImage2ON==true) {
+      backgroundImage2ON=false;
+      fill(greyReset);
+      rect(BUTTONbackgroundImage2X, BUTTONbackgroundImage2Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
+      fill(whiteReset);
+      toolbarLining=COLORIMAGE2toolbarLining;
+      toolbarFILLING=COLORIMAGE2toolbarFILLING;
+    }
+    if (backgroundImage3ON==true) {
+      backgroundImage3ON=false;
+      fill(greyReset);
+      rect(BUTTONbackgroundImage3X, BUTTONbackgroundImage3Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
+      fill(whiteReset);
+      toolbarLining=COLORIMAGE3toolbarLining;
+      toolbarFILLING=COLORIMAGE3toolbarFILLING;
+    }
+    //Drawing Tools can now only draw in the paper
+    fill(whiteReset);
+    rect(drawingSurfaceX, drawingSurfaceY, drawingSurfaceWidth, drawingSurfaceHeight);
+    paper=false;
+  }
+
+
+
+
+  //Color Pallette Image 
+  //image(BUTTONdisplayColorsImage, BUTTONdisplayColorsX, BUTTONdisplayColorsY, BUTTONdisplayColorsWidth, BUTTONdisplayColorsHeight);
+  //Color Choices Display
+  noStroke();
+  rect(ColorChoicesBoxX, ColorChoicesBoxY, ColorChoicesBoxWidth, ColorChoicesBoxHeight);
+  fill( redBUTTONcolor);
+  rect(BUTTONredDrawingColorX, BUTTONredDrawingColorY, colorButtonWidth, colorButtonHeight);
+  fill(orangeBUTTONcolor);
+  rect(BUTTONorangeDrawingColorX, BUTTONorangeDrawingColorY, colorButtonWidth, colorButtonHeight);
+  fill(yellowBUTTONcolor);
+  rect(BUTTONyellowDrawingColorX, BUTTONyellowDrawingColorY, colorButtonWidth, colorButtonHeight);
+  fill(greenBUTTONcolor);
+  rect(BUTTONgreenDrawingColorX, BUTTONgreenDrawingColorY, colorButtonWidth, colorButtonHeight);
+  fill(blueBUTTONcolor);
+  rect(BUTTONblueDrawingColorX, BUTTONblueDrawingColorY, colorButtonWidth, colorButtonHeight);
+  fill(purpleBUTTONcolor);
+  rect(BUTTONpurpleDrawingColorX, BUTTONpurpleDrawingColorY, colorButtonWidth, colorButtonHeight);
+  fill(greyBUTTONcolor);
+  rect(BUTTONgreyDrawingColorX, BUTTONgreyDrawingColorY, colorButtonWidth, colorButtonHeight);
+  fill(blackBUTTONcolor);
+  rect(BUTTONblackDrawingColorX, BUTTONblackDrawingColorY, colorButtonWidth, colorButtonHeight);
+  stroke(black);
+  fill(whiteReset);
+
+
+
+
+
+  //
+  //Drawing tool, combined boolean
+  fill (colorOfDrawingTool);
+  stroke(colorOfDrawingTool);
+  if (drawOnPaper==true && draw==true && mouseX>=drawingSurfaceX && mouseX<= drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<=drawingSurfaceY+drawingSurfaceHeight)  line(mouseX, mouseY, pmouseX, pmouseY) ;//End Line Draw
+  if (drawOnPaper==true && draw==true && mouseX>=drawingSurfaceX && mouseX<= drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<=drawingSurfaceY+drawingSurfaceHeight) ellipse(mouseX, mouseY, drawingDiameter, drawingDiameter);
+  if (drawOnPaper==false && draw==true && mouseX>=BUTTONbackgroundImage3X+BUTTONbackgroundImageWidth && mouseX<=appWidth && mouseY>=appHeight*0 && mouseY<=appHeight) line(mouseX, mouseY, pmouseX, pmouseY) ;
+  if (drawOnPaper==false && draw==true && mouseX>=BUTTONbackgroundImage3X+BUTTONbackgroundImageWidth && mouseX<=appWidth && mouseY>=appHeight*0 && mouseY<=appHeight) ellipse(mouseX, mouseY, drawingDiameter, drawingDiameter);
+  if (drawOnPaper==false && draw==true && mouseX>=appWidth*0 && mouseX<=appWidth && mouseY>=toolBarY+toolBarHeight+(roundedEdges) && mouseY<=appHeight) line(mouseX, mouseY, pmouseX, pmouseY) ;
+  if (drawOnPaper==false && draw==true && mouseX>=appWidth*0 && mouseX<=appWidth && mouseY>=toolBarY+toolBarHeight+(roundedEdges) && mouseY<=appHeight) ellipse(mouseX, mouseY, drawingDiameter, drawingDiameter);
+
+  //
+  /*
+  if (mouseX>=quitButtonX && mouseX<= quitButtonX+quitButtonWidth && mouseY>=quitButtonY && mouseY<=quitButtonY+quitButtonHeight) {
+   quitButtonColor=purple;
+   quitTextColor=whiteReset;
+   } else {
+   quitButtonColor=lightPink;
+   quitTextColor=black;
+   }
+   
+   fill(quitButtonColor);
+   rect(quitButtonX, quitButtonY, quitButtonWidth, quitButtonHeight);
+   fill(quitTextColor);
+   textAlign(CENTER, CENTER);
+   textFont(quitButtonFont, 25);
+   text(quitButtonText, quitButtonX, quitButtonY, quitButtonWidth, quitButtonHeight);
+   fill(whiteReset);
+   //
+   //Second rectangle with more text
+   fill(secondTextButtonColor);
+   rect(secondTextX, secontTextY, secondTextWidth, secondTextHeight);
+   fill(black); 
+   textAlign(CENTER, CENTER);
+   textFont(secondTextButtonFont, 14);
+   text(secondTextButtonText, secondTextX, secontTextY, secondTextWidth, secondTextHeight);
+   fill(whiteReset);
+   */
+}//End draw
+//
+void keyPressed () {
+  if (keyCode=='/') exit();
+}//End keyPressed
+//
+void mousePressed () {
+
+
+  //
+  //Paper button, and enabling ink
+
+  if (mouseX>= BUTTONpaperX && mouseX<= BUTTONpaperX+BUTTONpaperWidth && mouseY>=BUTTONpaperY && mouseY<=BUTTONpaperY+BUTTONpaperHeight) {
+    if (paper==false) paper=true;
+    drawOnPaper=true;
+  }
+  //To stop drawing while on paper
+  if (mouseX>=drawingSurfaceX && mouseX<= drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<=drawingSurfaceY+drawingSurfaceHeight) {
+    if (drawOnPaper==true) {
+    
+  if (draw==true) {
+  draw=false;
+  } else {
+   draw=true;
+  }
+  
+  }
+  
+  }
+  //To stop drawing while on background 
+  if (mouseX>=appWidth*0 && mouseX<=appWidth && mouseY>=toolBarY+toolBarHeight+(roundedEdges) && mouseY<=appHeight) {
+  
+  if (drawOnPaper==false) {
+    
+    if(draw==true) {
+    draw=false;
+    } else {
+    draw=true;
+    }
+  
+  }
+  
+  }
+  
+    if (mouseX>=BUTTONbackgroundImage3X+BUTTONbackgroundImageWidth && mouseX<=appWidth && mouseY>=appHeight*0 && mouseY<=appHeight) {
+  
+  if (drawOnPaper==false) {
+    
+    if(draw==true) {
+    draw=false;
+    } else {
+    draw=true;
+    }
+  
+  }
+  
+  }
+  
+  
+  
+  
+  //Button that allows the drawing of ink: paper
+  //
+  //if (mouseX>=quitButtonX && mouseX<= quitButtonX+quitButtonWidth && mouseY>=quitButtonY && mouseY<=quitButtonY+quitButtonHeight) exit();
+  //
+  BackgroundButtonsMousepressed ();
+  
+
+   //To allow color/drawing to show up on the background 
+   if (mouseX>=appWidth*0 && mouseX<=appWidth && mouseY>=toolBarY+toolBarHeight+(roundedEdges) && mouseY<=appHeight) {
+   
+   if (drawOnPaper==false) {
+   originalGreyBackgroundON=false;
+   backgroundImage1ON=false;
+   backgroundImage2ON=false;
+   backgroundImage3ON=false;
+   }
+   }
+   if (mouseX>=BUTTONbackgroundImage3X+BUTTONbackgroundImageWidth && mouseX<=appWidth && mouseY>=appHeight*0 && mouseY<=appHeight) {
+   
+   if (drawOnPaper==false) {
+   originalGreyBackgroundON=false;
+   backgroundImage1ON=false;
+   backgroundImage2ON=false;
+   backgroundImage3ON=false;
+   }
+   }
+   
+
+  //Color of drawing tools mousePressed
+
+  //color red
+
+  if (mouseX>=BUTTONredDrawingColorX && mouseX<=BUTTONredDrawingColorX+colorButtonWidth 
+    && mouseY>=BUTTONredDrawingColorY && mouseY<=BUTTONredDrawingColorY+colorButtonHeight) colorOfDrawingTool=redBUTTONcolor;
+
+
+
+  //color orange
+
+  if (mouseX>=BUTTONorangeDrawingColorX && mouseX<=BUTTONorangeDrawingColorX+colorButtonWidth 
+    && mouseY>=BUTTONorangeDrawingColorY && mouseY<=BUTTONorangeDrawingColorY+colorButtonHeight)  colorOfDrawingTool=orangeBUTTONcolor;
+
+
+
+  //color yellow
+  if (mouseX>=BUTTONyellowDrawingColorX && mouseX<=BUTTONyellowDrawingColorX+colorButtonWidth 
+    && mouseY>=BUTTONyellowDrawingColorY && mouseY<=BUTTONyellowDrawingColorY+colorButtonHeight) colorOfDrawingTool=yellowBUTTONcolor;
+
+
+  //color green
+  if (mouseX>=BUTTONgreenDrawingColorX && mouseX<=BUTTONgreenDrawingColorX+colorButtonWidth 
+    && mouseY>=BUTTONgreenDrawingColorY && mouseY<=BUTTONgreenDrawingColorY+colorButtonHeight) colorOfDrawingTool=greenBUTTONcolor;
+
+
+
+  //color blue
+  if (mouseX>=BUTTONblueDrawingColorX && mouseX<=BUTTONblueDrawingColorX+colorButtonWidth 
+    && mouseY>=BUTTONblueDrawingColorY && mouseY<=BUTTONblueDrawingColorY+colorButtonHeight) colorOfDrawingTool=blueBUTTONcolor;
+
+
+
+  //color purple
+  if (mouseX>=BUTTONpurpleDrawingColorX && mouseX<=BUTTONpurpleDrawingColorX+colorButtonWidth 
+    && mouseY>=BUTTONpurpleDrawingColorY && mouseY<=BUTTONpurpleDrawingColorY+colorButtonHeight) colorOfDrawingTool=purpleBUTTONcolor;
+
+
+  //color grey
+  if (mouseX>=BUTTONgreyDrawingColorX && mouseX<=BUTTONgreyDrawingColorX+colorButtonWidth 
+    && mouseY>=BUTTONgreyDrawingColorY && mouseY<=BUTTONgreyDrawingColorY+colorButtonHeight) colorOfDrawingTool=greyBUTTONcolor;
+
+
+  //color black
+  if (mouseX>=BUTTONblackDrawingColorX && mouseX<=BUTTONblackDrawingColorX+colorButtonWidth 
+    && mouseY>=BUTTONblackDrawingColorY && mouseY<=BUTTONblackDrawingColorY+colorButtonHeight)  colorOfDrawingTool=blackBUTTONcolor;
+}//End mousePressed
+//
+//End MAIN program
