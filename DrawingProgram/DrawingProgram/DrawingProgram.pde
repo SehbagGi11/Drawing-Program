@@ -50,10 +50,10 @@ void setup()
   Paper();
   //
   minim = new Minim(this); //loads from data directory, loads from project folder
-  song[currentSong] = minim.loadFile("MusicDownload/Beat_Your_Competition.mp3"); //albe to pass absulute path, file name & extension, and URL
-  song[currentSong+=1] = minim.loadFile("MusicDownload/Ghost_Walk.mp3");
-  song[currentSong+=1] = minim.loadFile("MusicDownload/The_Simplest.mp3");
-  song[currentSong+=1] = minim.loadFile("MusicDownload/MusicProgram_MusicDownload_groove.mp3");
+  song[currentSong] = minim.loadFile("DownLoaded/Built to Last (Instrumental) - NEFFEX.mp3"); //albe to pass absulute path, file name & extension, and URL
+  song[currentSong+=1] = minim.loadFile("DownLoaded/Danger Snow - Dan Henig.mp3");
+  song[currentSong+=1] = minim.loadFile("DownLoaded/It's Only Worth It if You Work for It - NEFFEX.mp3");
+  song[currentSong+=1] = minim.loadFile("DownLoaded/Tell Me That I Can't - NEFFEX.mp3");
   // 
   currentSong-=currentSong; //currentSong = currentSong - currentSong
   for ( int i=currentSong; i<song.length; i++ ) {
@@ -73,7 +73,7 @@ void setup()
   println( "Album: ", songMetaData[currentSong].album() );
   println( "Genre: ", songMetaData[currentSong].genre() );
 
-  soundEffect = minim.loadFile("DownLoaded/Beep.mp3");
+  soundEffect = minim.loadFile("DownLoaded/Beep.mp3.mp3");
   Images();
 }
 //End setup
