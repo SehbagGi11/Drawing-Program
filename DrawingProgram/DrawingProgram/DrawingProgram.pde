@@ -1,540 +1,721 @@
+//Libraries: uses Sketch / Import Library / Add Library / Minim
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+import ddf.minim.signals.*;
+import ddf.minim.spi.*;
+import ddf.minim.ugens.*;
+//
 //Global Variables
-float appWidth, appHeight;
-float originX, originY;
-color whiteReset=#FFFFFF, black=#000000, greyReset=#CCCCCC;
-//color quitButtonColor, quitTextColor;
+Minim minim; //object to access all music player fuctions
+int numberOfSongs = 4;
+AudioPlayer[] song = new AudioPlayer[numberOfSongs]; //WAV, AIFF, AU, SND, & MP3
+AudioMetaData[] songMetaData = new AudioMetaData[numberOfSongs]; //meta data
+int currentSong = numberOfSongs - numberOfSongs;
+AudioPlayer soundEffect;
+
+color purple = #E60AFF;
+PFont titleFont;
+float gain = 20.0;
+
+Boolean draw=false, draw1=false, draw2=false, draw3=false, turnONgreen = false, turnONstroke = false, turnONblue=false, turnONred=false, turnONblack=false;
 int reset=1;
+int squareWidth, squareHeight ;
+float drawingSurfaceX, drawingSurfaceY, drawingSurfaceWidth, drawingSurfaceHeight, drawingDiameter, drawingDiameter1; 
 
-//PaperButton
-float BUTTONpaperX, BUTTONpaperY, BUTTONpaperWidth, BUTTONpaperHeight;
-PImage BUTTONpaperImage;
-int BUTTONpaperImageWidth, BUTTONpaperImageHeight;
-int largerPaperImageDimension, smallerPaperImageDimension;
-float BUTTONpaperIMAGEaDJUSTEDWidth, BUTTONpaperIMAGEaDJUSTEDHeight;
-Boolean BUTTONpaperImageWidthLARGER=false, BUTTONpaperImageHeightLARGER=false;
-float paperImageWidthRatio=0.0, paperImageHeightRatio=0.0;
-
-
-//Paper
-float drawingSurfaceX, drawingSurfaceY, drawingSurfaceWidth, drawingSurfaceHeight;
-float  drawingDiameter;
-Boolean paper=false;
+color resetWhite=#FFFFFF, red=#FF7676, green=#72F04D, yellow=#ECF04D, black=0, gold= #FFD700, turquoise= #AFEEEE, blue= #005477, orange = #ffa500, gray = #808080, Darkgreen = #528E52, Darkred = #950C0C, quitButtonColour, paperButtonColour;
 //
-//Tool Bar: want it to be a rounded/dark square below the painting surface 
-float toolBarX, toolBarY, toolBarWidth, toolBarHeight;
-int roundedEdges;
-color toolbarLining, toolbarFILLING;
-//
-/*
-//Quit Button
- String quitButtonText="Exit Program";
- PFont quitButtonFont; //CAN'T POPULATE A FONT IN THE GLOBAL VARIABLES
- float quitButtonX, quitButtonY, quitButtonWidth, quitButtonHeight;
- */
-//
-//Second Button
-float secondTextX, secontTextY, secondTextWidth, secondTextHeight;
-//color secondTextButtonColor=#B2F5A6;
-//String secondTextButtonText="Start Drawing";
-//PFont secondTextButtonFont;
-//
-//Color Pallete Variables
-float ColorChoicesBoxX, ColorChoicesBoxY, ColorChoicesBoxWidth, ColorChoicesBoxHeight;
-float BUTTONredDrawingColorX, BUTTONredDrawingColorY, colorButtonWidth, colorButtonHeight;
-float BUTTONorangeDrawingColorX, BUTTONorangeDrawingColorY;
-float BUTTONyellowDrawingColorX, BUTTONyellowDrawingColorY;
-float BUTTONgreenDrawingColorX, BUTTONgreenDrawingColorY;
-float BUTTONblueDrawingColorX, BUTTONblueDrawingColorY;
-float BUTTONpurpleDrawingColorX, BUTTONpurpleDrawingColorY;
-float BUTTONgreyDrawingColorX, BUTTONgreyDrawingColorY;
-float BUTTONblackDrawingColorX, BUTTONblackDrawingColorY;
-/*
-float red1X, red1Y;
- float orange1X, orange1Y;
- float yellow1X, yellow1Y;
- float green1X, green1Y;
- float blueX, blue1Y;
- float purple1X, purple1Y;
- float black1X, black1Y;
- float grey1X, grey1Y;
- float brownX, brown1Y;
- */
-
-color redBUTTONcolor=#FF081E, orangeBUTTONcolor=#FF8C1E, yellowBUTTONcolor=#FFF11E, greenBUTTONcolor=#5BBC00;
-color blueBUTTONcolor=#00BDF3, purpleBUTTONcolor=#7A1A7D, greyBUTTONcolor=greyReset, blackBUTTONcolor=black;
-color colorOfDrawingTool;
-Boolean colorChoicesON=false;
-//
-//Background Image Buttons
-float BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight;
-float BUTTONbackgroundImage1X, BUTTONbackgroundImage1Y;
-float BUTTONbackgroundImage2X, BUTTONbackgroundImage2Y;
-float BUTTONbackgroundImage3X, BUTTONbackgroundImage3Y;
-Boolean backgroundImage1ON=false, backgroundImage2ON=false, backgroundImage3ON=false, originalGreyBackgroundON=true;
-
-//
-//
-// Drawing Tool Buttons
-float drawingButtonWidth, drawingButtonHeight;
-float eraserButtonX, eraserButtonY; 
-float pencilButtonX, pencilButtonY;
-PImage BUTTONpencilImage;
-boolean drawOnPaper=false, draw=false;
-//
-//Background image
-float backgroundImage1WidthEnlargedAdjusted, backgroundImage1HeightEnlargedAdjusted, backgroundImage1WidthMinimizedAdjusted, backgroundImage1HeightMinimizedAdjusted;
-float backgroundImage2WidthEnlargedAdjusted, backgroundImage2HeightEnlargedAdjusted, backgroundImage2WidthMinimizedAdjusted, backgroundImage2HeightMinimizedAdjusted;
-float backgroundImage3WidthEnlargedAdjusted, backgroundImage3HeightEnlargedAdjusted, backgroundImage3WidthMinimizedAdjusted, backgroundImage3HeightMinimizedAdjusted;
-float backgroundImage1WidthRatio=0.0, backgroundImage1HeightRatio=0.0, backgroundImage2WidthRatio=0.0, backgroundImage2HeightRatio=0.0, backgroundImage3WidthRatio=0.0, backgroundImage3HeightRatio=0.0;
-int largerbackgroundImage1Dimension, smallerbackgroundImage1Dimension, largerbackgroundImage2Dimension, smallerbackgroundImage2Dimension, largerbackgroundImage3Dimension, smallerbackgroundImage3Dimension;
-PImage backgroundImage1, backgroundImage2, backgroundImage3;
-float backgroundImage1X, backgroundImage1Y, backgroundImage2X, backgroundImage2Y, backgroundImage3X, backgroundImage3Y;
-float backgroundImage1Width, backgroundImage1Height, backgroundImage2Width, backgroundImage2Height, backgroundImage3Width, backgroundImage3Height;
-color red1=#ED1C24, yellow1=#FAE68D, green1=#1D4B3E;
-color peachy=#F5D9C3, yellow2=#FFE44D, yell0w3=#FED480, blue1=#C2E8D1, blue2=#79D5AC, purple1=#695583, purple2=#AC90A7;
-color orangeRed1=#BD3328, orange1=#FE845D, orange2=#FA735D, orange3=#F49730, orange4=#C75E25, orange5=#FFA859;
-color COLORIMAGE1toolbarLining=#DD979F;
-color COLORIMAGE2toolbarLining=blue2;
-color COLORIMAGE3toolbarLining=green1;
-color COLORIMAGE1toolbarFILLING=peachy;
-color COLORIMAGE2toolbarFILLING=yell0w3;
-color COLORIMAGE3toolbarFILLING=orange5;
+float rectXPic1, rectYPic1, rectWidthPic1, rectHeightPic1;
+float rectXPic2, rectYPic2, rectWidthPic2, rectHeightPic2;
+float rectXPic3, rectYPic3, rectWidthPic3, rectHeightPic3;
+float rectXPic4, rectYPic4, rectWidthPic4, rectHeightPic4;
+float rectXPic5, rectYPic5, rectWidthPic5, rectHeightPic5;
+float rectXPic6, rectYPic6, rectWidthPic6, rectHeightPic6;
+float rectXPic7, rectYPic7, rectWidthPic7, rectHeightPic7;
+float rectXPic8, rectYPic8, rectWidthPic8, rectHeightPic8;
+float rectXPic9, rectYPic9, rectWidthPic9, rectHeightPic9;
+float rectXPic10, rectYPic10, rectWidthPic10, rectHeightPic10;
+PImage pic1, pic2, pic3, pic4, pic5, pic6, pic7, pic8, pic9, pic10;
 
 
-//
-void setup () {
-  fullScreen();//NEED TO CHANGE TO fullScreen();, which means everything else will need to be changed to displayWidth
-  originX=width*0;
-  originY=height*0;
-  appWidth=width;
-  appHeight=height;
-  //Display Orientation: Landscape (displayWidth>displayHeight), not portrait or square
-  //If our width is larger than our height we are in landscape mode
-  //if  ( displayWidth .+ displayHeight) {println("landscape or Square");} else {println("Portrait");}
-  String ls="Landscape or Square", p="portrait", DO="Display Orientation", instruction="turn your phone kiddo";
-  String orientation = (appWidth >= appHeight) ? ls:p; //Ternary operator
-  println(DO, orientation);
+void setup()
+{
+  //Mandatory: Mistaken display orientation should break app, feedback to console and CANVAS
+  fullScreen();
+  //
+  population();
+  //
+  textSetup();
+  //
+  Paper();
+  //
+  minim = new Minim(this); //loads from data directory, loads from project folder
+  song[currentSong] = minim.loadFile("MusicDownload/Beat_Your_Competition.mp3"); //albe to pass absulute path, file name & extension, and URL
+  song[currentSong+=1] = minim.loadFile("MusicDownload/Ghost_Walk.mp3");
+  song[currentSong+=1] = minim.loadFile("MusicDownload/The_Simplest.mp3");
+  song[currentSong+=1] = minim.loadFile("MusicDownload/MusicProgram_MusicDownload_groove.mp3");
+  // 
+  currentSong-=currentSong; //currentSong = currentSong - currentSong
+  for ( int i=currentSong; i<song.length; i++ ) {
+    songMetaData[i] = song[i].getMetaData();
+  }//End Meta Data
 
-  if (orientation==ls) {
-    println("Good to go :)");
-  } else {
-    println(instruction);
-    appWidth *=0; //this is called an assingment operator; this means appWidth=appWidth*0, thi
-    appHeight *=0;
-  }
-  println("App Geometry is:", "\t AppWidth:", appWidth, "\t AppHeight:", appHeight);
-  //Calucating larer Dimension and aspect ratio
-  ChoosingLargerDimensionCalculatingAspectRatios();
-  //Paper 
+  //songMetaData[0] = song[0].getMetaData();
+  //songMetaData[1] = song[1].getMetaData();
+  //songMetaData[2] = song[2].getMetaData();
+  //
+  titleFont = createFont( "Arial", 35 );
+  //
+  println("Start of Console");
+  println("Click the console to finish starting this program");
+  println("Title:", songMetaData[currentSong].title() );
+  println( "Author: ", songMetaData[currentSong].author() ); 
+  println( "Album: ", songMetaData[currentSong].album() );
+  println( "Genre: ", songMetaData[currentSong].genre() );
 
-  drawingSurfaceWidth = width*1/2; 
-  drawingSurfaceHeight = height*3/4;
-  drawingSurfaceX = (width*1/2)-(drawingSurfaceWidth*1/2);
-  drawingSurfaceY =appHeight*1/8;
-  drawingDiameter=width*1/100;
-  rect(drawingSurfaceX, drawingSurfaceY, drawingSurfaceWidth, drawingSurfaceHeight);
-  //Tool Bar: want it to be a rounded/dark square below the painting surface 
-  roundedEdges= height*1/50;
-  toolBarWidth= (drawingSurfaceWidth*1/4)*5/4;
-  toolBarHeight= drawingSurfaceHeight;
-  toolBarX=(appWidth*0)+ float(roundedEdges);
-  toolBarY=appHeight*1/8; 
-  //Background Buttons
-  BUTTONbackgroundImageWidth= (drawingSurfaceWidth*1/4)*1/2;
-  BUTTONbackgroundImageHeight= (drawingSurfaceWidth*1/4)*1/2;
-  BUTTONbackgroundImage1X=appWidth*0;
-  BUTTONbackgroundImage1Y=appHeight*0;
-  BUTTONbackgroundImage2X=(appWidth*0)+BUTTONbackgroundImageWidth;
-  BUTTONbackgroundImage2Y=(appHeight*0);
-  BUTTONbackgroundImage3X=(appWidth*0)+(BUTTONbackgroundImageWidth*2);
-  BUTTONbackgroundImage3Y=(appHeight*0);
-  //Images going inside background buttons
+  soundEffect = minim.loadFile("DownLoaded/Beep.mp3");
+  Images();
+}
+//End setup
 
-  backgroundImage1=loadImage("GOODCOPYbackgroundImage1.png");
-  backgroundImage2=loadImage("GOODCOPYbackgroundImage2.png");
-  backgroundImage3=loadImage("GOODCOPYbackgroundImage3.png");
+void draw()
+{
+  //
+  if ( paper==true ) Paper();
+  //
+  QuitButton();
+  //
+  PaperButton();
+  //
+  EllipseTool();
+  //
+  LineTool();
+  //
+  SquareTool();
+  //
+  playButton();
+  //
+  forwardButton();
+  //
+  reverseButton();
+  //
+  muteButton();
+  //
+  stopButton();
+  //
+  loopButton();
+  //
+  nextButton();
+  //
+  backButton();
+  //
+  previousButton();
+  //
+  amplifyButton();
+  //
+  eraserButton();
+  //
+  Text();
+  //
+  Text1();
+  //
+  picDraw();
+  //
 
-  backgroundImage1Width=236;
-  backgroundImage1Height=236;
-  backgroundImage2Width=1920;
-  backgroundImage2Height=1200;
-  backgroundImage3Width=785;
-  backgroundImage3Height=442;
-
-  backgroundImage1X=appWidth*0;
-  backgroundImage1Y=appHeight*0;
-  backgroundImage2X=appWidth*0;
-  backgroundImage2Y=appHeight*0;
-  backgroundImage3X=appWidth*0;
-  backgroundImage3Y=appHeight*0;
-
-  //Paper Button Variables
-  BUTTONpaperImage=loadImage("CROPPEDPaperButtonImage-129x172.jpg");
-  BUTTONpaperImageWidth=129; 
-  BUTTONpaperImageHeight=172;
-  BUTTONpaperIMAGEaDJUSTEDWidth=BUTTONpaperImageWidth*paperImageWidthRatio;
-  BUTTONpaperIMAGEaDJUSTEDHeight= BUTTONpaperImageHeight*paperImageHeightRatio;
-  BUTTONpaperWidth=BUTTONbackgroundImageWidth;
-  BUTTONpaperHeight=BUTTONbackgroundImageHeight;
-  BUTTONpaperX=toolBarX+float(roundedEdges*25/20);
-  BUTTONpaperY=toolBarY+float(roundedEdges);
-  /*
-  //Color Tool Box Activator population
-   
-   
-   BUTTONdisplayColorsX= BUTTONpaperX+BUTTONpaperWidth+(float(roundedEdges)*10/50);
-   BUTTONdisplayColorsY=BUTTONpaperY;
-   BUTTONdisplayColorsWidth=BUTTONpaperWidth;
-   BUTTONdisplayColorsHeight=BUTTONpaperHeight;
-   BUTTONdisplayColorsImage=loadImage("ColorPalette.png");
-   BUTTONdisplayColorsImageWidth=800;
-   BUTTONdisplayColorsImageHeight=800;
-   */
-
-  // Color Choices Box Population
-  ColorChoicesBoxHeight=BUTTONbackgroundImageHeight;
-  colorButtonWidth=BUTTONbackgroundImageWidth*1/4;
-  colorButtonHeight=ColorChoicesBoxHeight*1/2;
-  ColorChoicesBoxWidth=BUTTONbackgroundImageWidth;
-
-  ColorChoicesBoxX=BUTTONpaperX+BUTTONpaperWidth+(roundedEdges*1/2);
-  ColorChoicesBoxY=BUTTONpaperY;
-  BUTTONredDrawingColorX= ColorChoicesBoxX;
-  BUTTONredDrawingColorY= ColorChoicesBoxY;
-  BUTTONorangeDrawingColorX= ColorChoicesBoxX+colorButtonWidth;
-  BUTTONorangeDrawingColorY= ColorChoicesBoxY;
-  BUTTONyellowDrawingColorX= ColorChoicesBoxX+(colorButtonWidth*2);
-  BUTTONyellowDrawingColorY= ColorChoicesBoxY;
-  BUTTONgreenDrawingColorX= ColorChoicesBoxX+(colorButtonWidth*3);
-  BUTTONgreenDrawingColorY= ColorChoicesBoxY;
-  BUTTONblueDrawingColorX= ColorChoicesBoxX;
-  BUTTONblueDrawingColorY= ColorChoicesBoxY+colorButtonHeight;
-  BUTTONpurpleDrawingColorX= ColorChoicesBoxX+colorButtonWidth;
-  BUTTONpurpleDrawingColorY= ColorChoicesBoxY+colorButtonHeight;
-  BUTTONgreyDrawingColorX=ColorChoicesBoxX+(colorButtonWidth*2);
-  BUTTONgreyDrawingColorY=ColorChoicesBoxY+colorButtonHeight;
-  BUTTONblackDrawingColorX=ColorChoicesBoxX+(colorButtonWidth*3);
-  BUTTONblackDrawingColorY=ColorChoicesBoxY+colorButtonHeight;
-  
-  //Coloring Tools
-  drawingButtonWidth=(drawingSurfaceWidth*1/4)*1/2*1/2;
-  drawingButtonHeight=(drawingSurfaceWidth*1/4)*1/2*1/2;
-  pencilButtonX=BUTTONpaperX;
-  pencilButtonY=BUTTONpaperY+BUTTONpaperHeight+(roundedEdges);
-  BUTTONpencilImage=loadImage("BUTTONpencilimage.jpg");
-
-
-
-  /*
-  //Quit button
-   quitButtonFont= createFont("Microsoft Himalaya", 15);
-   quitButtonWidth=width*1/8;
-   quitButtonHeight=height*1/10;
-   quitButtonX=width*0;
-   quitButtonY=drawingSurfaceHeight-(quitButtonHeight);
-   //Second Text Button
-   secondTextX=width*0;
-   secontTextY=drawingSurfaceHeight-(quitButtonHeight*2);
-   secondTextWidth=quitButtonWidth;
-   secondTextHeight=quitButtonHeight;
-   secondTextButtonFont=createFont("Segoe UI Semibold Italic", 25);
-   */
-
-  //Types of Font
-  //String [] fontList=PFont.list();
-  // printArray(fontList);
-}//End setup
-// 
-void draw () {
-  //Grey Background code
-  if (originalGreyBackgroundON==true) {
-    background(greyReset);  
-    image(backgroundImage1, BUTTONbackgroundImage1X, BUTTONbackgroundImage1Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
-    image(backgroundImage2, BUTTONbackgroundImage2X, BUTTONbackgroundImage2Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
-    image(backgroundImage3, BUTTONbackgroundImage3X, BUTTONbackgroundImage3Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
-  } else {
-  }
-  //Background Image 1 code
-  backgroundImage1Draw();
-  //Background Image 2 Code
-  if (backgroundImage2ON==true) {
-    background(backgroundImage2); 
-    fill(greyReset);
-    rect(BUTTONbackgroundImage2X, BUTTONbackgroundImage2Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
-    fill(whiteReset);
-    image(backgroundImage1, BUTTONbackgroundImage1X, BUTTONbackgroundImage1Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
-    image(backgroundImage3, BUTTONbackgroundImage3X, BUTTONbackgroundImage3Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
-  } else {
-  }
-  //Background Image 3 Code
-  if (backgroundImage3ON==true) {
-    background(backgroundImage3); 
-    fill(greyReset);
-    rect(BUTTONbackgroundImage3X, BUTTONbackgroundImage3Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
-    fill(whiteReset);
-    image(backgroundImage1, BUTTONbackgroundImage1X, BUTTONbackgroundImage1Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
-    image(backgroundImage2, BUTTONbackgroundImage2X, BUTTONbackgroundImage2Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
-  } else {
-  }
-
-  //Tool Bar
-  ToolBarCode ();
-  //OutLine for background buttons
-  noFill();
-  rect(BUTTONbackgroundImage1X, BUTTONbackgroundImage1Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
-  rect(BUTTONbackgroundImage2X, BUTTONbackgroundImage2Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
-  rect(BUTTONbackgroundImage3X, BUTTONbackgroundImage3Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
-  //Paper Button Image
-  image(BUTTONpaperImage, BUTTONpaperX, BUTTONpaperY, BUTTONpaperWidth*75/100, BUTTONpaperHeight);
-  //Pencil Code
-  noFill();
-  noStroke();
-  rect(pencilButtonX,  pencilButtonY, drawingButtonWidth, drawingButtonHeight);
-  image(BUTTONpencilImage, pencilButtonX,  pencilButtonY, drawingButtonWidth, drawingButtonHeight);
-  fill(whiteReset);
+  //Drawing Tools
+  fill(resetWhite);
   stroke(black);
 
-  //Paper Button if statement
-  if (paper==true) {
-    if (originalGreyBackgroundON==true) {
-      originalGreyBackgroundON=false;
-      toolbarLining=black;
-      toolbarFILLING=whiteReset;
-    }
-    if (backgroundImage1ON==true) {
-      backgroundImage1ON=false;
-      fill(greyReset);
-      rect(BUTTONbackgroundImage1X, BUTTONbackgroundImage1Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
-      fill(whiteReset);
-      toolbarLining=COLORIMAGE1toolbarLining;
-      toolbarFILLING=COLORIMAGE1toolbarFILLING;
-    }
-    if ( backgroundImage2ON==true) {
-      backgroundImage2ON=false;
-      fill(greyReset);
-      rect(BUTTONbackgroundImage2X, BUTTONbackgroundImage2Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
-      fill(whiteReset);
-      toolbarLining=COLORIMAGE2toolbarLining;
-      toolbarFILLING=COLORIMAGE2toolbarFILLING;
-    }
-    if (backgroundImage3ON==true) {
-      backgroundImage3ON=false;
-      fill(greyReset);
-      rect(BUTTONbackgroundImage3X, BUTTONbackgroundImage3Y, BUTTONbackgroundImageWidth, BUTTONbackgroundImageHeight);
-      fill(whiteReset);
-      toolbarLining=COLORIMAGE3toolbarLining;
-      toolbarFILLING=COLORIMAGE3toolbarFILLING;
-    }
-    //Drawing Tools can now only draw in the paper
-    fill(whiteReset);
-    rect(drawingSurfaceX, drawingSurfaceY, drawingSurfaceWidth, drawingSurfaceHeight);
-    paper=false;
+  if ( draw==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<=drawingSurfaceY+drawingSurfaceHeight) line( mouseX, mouseY, pmouseX, pmouseY );  //End Line Draw
+  stroke(red);
+  if ( draw1==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<=drawingSurfaceY+drawingSurfaceHeight) ellipse( mouseX, mouseY, drawingDiameter, drawingDiameter );
+  stroke(gold);
+  if ( draw2==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<=drawingSurfaceY+drawingSurfaceHeight) rect (  mouseX, mouseY, squareWidth, squareHeight );
+  noStroke();
+  if ( draw3==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<=drawingSurfaceY+drawingSurfaceHeight) ellipse ( mouseX, mouseY, drawingDiameter1, drawingDiameter1 );
+
+
+  //if ( song[currentSong].isLooping() ) println("There are", song[currentSong].loopCount()-1, "loops left.");
+  //if ( song[currentSong].isPlaying() && !song[currentSong].isLooping() ) println("Play Once");
+  //
+  //println("Computer Number of Current Song:", currentSong);
+  println("Song Position", song[currentSong].position(), "Song Length", song[currentSong].length() );
+  //
+  stroke(turquoise);
+  rect(displayWidth*4/5, displayHeight*3/5, displayWidth*1/5, displayHeight*1/20);
+  fill(purple);
+  textAlign (CENTER, CENTER); 
+  textFont(titleFont, 20); 
+  text(songMetaData[currentSong].title(), displayWidth*4/5, displayHeight*3/5, displayWidth*1/5, displayHeight*1/20);
+  fill(255);
+  //
+  //
+  rect(displayWidth*4/5, displayHeight*3.3/5, displayWidth*1/5, displayHeight*1/20);
+  fill(purple);
+  textAlign (CENTER, CENTER); 
+  textFont(titleFont, 20); 
+  text(songMetaData[currentSong].author(), displayWidth*4/5, displayHeight*3.3/5, displayWidth*1/5, displayHeight*1/20);
+  fill(255);
+  //
+  rect(displayWidth*4/5, displayHeight*3.6/5, displayWidth*1/5, displayHeight*1/20);
+  fill(purple);
+  textAlign (CENTER, CENTER); 
+  textFont(titleFont, 20); 
+  text(songMetaData[currentSong].genre(), displayWidth*4/5, displayHeight*3.6/5, displayWidth*1/5, displayHeight*1/20);
+  fill(255);
+  //
+  rect(displayWidth*4/5, displayHeight*3.9/5, displayWidth*1/5, displayHeight*1/20);
+  fill(purple);
+  textAlign (CENTER, CENTER); 
+  textFont(titleFont, 20); 
+  text(songMetaData[currentSong].album(), displayWidth*4/5, displayHeight*3.9/5, displayWidth*1/5, displayHeight*1/20);
+  fill(255);
+  //
+  //Visualizer
+  fill(#000000);
+  rect(displayWidth*0/5, displayHeight*0/5, displayWidth*1/6, displayHeight*1/6);
+  stroke(turquoise);
+  for (int i = 0; i < song[currentSong].bufferSize() - 1; i++)
+  {
+    float x1 = map( i, 0, song[currentSong].bufferSize(), 100, 250 );
+    float x2 = map( i+1, 0, song[currentSong].bufferSize(), 100, 250 );
+    line( x1, 50 + song[currentSong].left.get(i)*30, x2, 50 + song[currentSong].left.get(i+1)*30 );
+    line( x2, 150 + song[currentSong].right.get(i)*30, x2, 150 + song[currentSong].right.get(i+1)*30 );
   }
 
+  //Draw a line to show where in the song playback is currently located
+  float posx = map(song[currentSong].position(), 0, song[currentSong].length(), 50, 250);
+  stroke(0, 200, 0);
+  line(posx, 0, posx, 180);
+  //End visualizer
 
 
+  if (turnONgreen==true) {
 
-  //Color Pallette Image 
-  //image(BUTTONdisplayColorsImage, BUTTONdisplayColorsX, BUTTONdisplayColorsY, BUTTONdisplayColorsWidth, BUTTONdisplayColorsHeight);
-  //Color Choices Display
-  noStroke();
-  rect(ColorChoicesBoxX, ColorChoicesBoxY, ColorChoicesBoxWidth, ColorChoicesBoxHeight);
-  fill( redBUTTONcolor);
-  rect(BUTTONredDrawingColorX, BUTTONredDrawingColorY, colorButtonWidth, colorButtonHeight);
-  fill(orangeBUTTONcolor);
-  rect(BUTTONorangeDrawingColorX, BUTTONorangeDrawingColorY, colorButtonWidth, colorButtonHeight);
-  fill(yellowBUTTONcolor);
-  rect(BUTTONyellowDrawingColorX, BUTTONyellowDrawingColorY, colorButtonWidth, colorButtonHeight);
-  fill(greenBUTTONcolor);
-  rect(BUTTONgreenDrawingColorX, BUTTONgreenDrawingColorY, colorButtonWidth, colorButtonHeight);
-  fill(blueBUTTONcolor);
-  rect(BUTTONblueDrawingColorX, BUTTONblueDrawingColorY, colorButtonWidth, colorButtonHeight);
-  fill(purpleBUTTONcolor);
-  rect(BUTTONpurpleDrawingColorX, BUTTONpurpleDrawingColorY, colorButtonWidth, colorButtonHeight);
-  fill(greyBUTTONcolor);
-  rect(BUTTONgreyDrawingColorX, BUTTONgreyDrawingColorY, colorButtonWidth, colorButtonHeight);
-  fill(blackBUTTONcolor);
-  rect(BUTTONblackDrawingColorX, BUTTONblackDrawingColorY, colorButtonWidth, colorButtonHeight);
-  stroke(black);
-  fill(whiteReset);
+    fill(green);
+    stroke(green);
+    if (draw==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight)  
+      if (draw==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight) line( mouseX, mouseY, pmouseX, pmouseY );
+  } //End Line Draw
+  //
+  if (turnONgreen==true) {
 
+    fill(green);
+    if (draw1==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight)  
+      if (draw1==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight) ellipse( mouseX, mouseY, drawingDiameter, drawingDiameter );
+  }
+  if (turnONgreen==true) {
 
+    fill(green);
+    if (draw2==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight)  
+      if (draw2==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight) rect (  mouseX, mouseY, squareWidth, squareHeight );
+  }
+  //
+  if (mouseX>=greenButtonX && mouseX<=greenButtonX+greenButtonWidth && mouseY>=greenButtonY && mouseY<=greenButtonY+greenButtonHeight) {
+    println("Green Button Enabled");
+    if (turnONgreen==false) {
+      turnONgreen=true;
+    } else {
+      turnONgreen=false;
+    }
+  }
+  if (mouseX>=greenButtonX && mouseX<=greenButtonX+greenButtonWidth && mouseY>=greenButtonY && mouseY<=greenButtonY+greenButtonHeight) {
+    noStroke();
+    fill(Darkgreen);
+    rect(greenButtonX, greenButtonY, greenButtonWidth, greenButtonHeight);
+  } else {
 
+    noStroke();
+    fill(green);
+    rect(greenButtonX, greenButtonY, greenButtonWidth, greenButtonHeight);
+  }
+  //
+  if (turnONgreen==true) {
+
+    fill(Darkgreen);
+    rect(greenButtonX, greenButtonY, greenButtonWidth, greenButtonHeight);
+  } else {
+    fill(green);
+    rect(greenButtonX, greenButtonY, greenButtonWidth, greenButtonHeight);
+  }//
+
+  if (turnONstroke==true) {
+    fill(green);
+    colorMode(green);
+    rect(greenButtonX, greenButtonY, greenButtonWidth, greenButtonHeight);
+    fill(resetWhite);
+  }
+
+  if (turnONgreen==true) {
+
+    fill(Darkgreen);
+    rect(greenButtonX, greenButtonY, greenButtonWidth, greenButtonHeight);
+  } else {
+    fill(green);
+    rect(greenButtonX, greenButtonY, greenButtonWidth, greenButtonHeight);
+  }//
+
+  //
+  //
+  //
+
+  if (turnONblue==true) {
+
+    fill(turquoise);
+    stroke(turquoise);
+    if (draw==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight)  
+      if (draw==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight) line( mouseX, mouseY, pmouseX, pmouseY );
+  } //End Line Draw
+  //
+  if (turnONblue==true) {
+
+    fill(turquoise);
+    stroke(turquoise);
+    if (draw1==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight)  
+      if (draw1==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight) ellipse( mouseX, mouseY, drawingDiameter, drawingDiameter );
+  }
+  if (turnONblue==true) {
+
+    fill(turquoise);
+    stroke(turquoise);
+    if (draw2==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight)  
+      if (draw2==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight) rect (  mouseX, mouseY, squareWidth, squareHeight );
+  }
+  //
+  if (mouseX>=blueButtonX && mouseX<=blueButtonX+blueButtonWidth && mouseY>=blueButtonY && mouseY<=blueButtonY+blueButtonHeight) {
+    println("Blue Button Enabled");
+    if (turnONblue==false) {
+      turnONblue=true;
+    } else {
+      turnONblue=false;
+    }
+  }
+  if (mouseX>=blueButtonX && mouseX<=blueButtonX+blueButtonWidth && mouseY>=blueButtonY && mouseY<=blueButtonY+blueButtonHeight) {
+    noStroke();
+    fill(blue);
+    rect(blueButtonX, blueButtonY, blueButtonWidth, blueButtonHeight);
+  } else {
+
+    stroke(turquoise);
+    fill(turquoise);
+    rect(blueButtonX, blueButtonY, blueButtonWidth, blueButtonHeight);
+  }
+  //
+  if (turnONblue==true) {
+
+    fill(blue);
+    noStroke();
+    rect(blueButtonX, blueButtonY, blueButtonWidth, blueButtonHeight);
+  } else {
+    fill(turquoise);
+    rect(blueButtonX, blueButtonY, blueButtonWidth, blueButtonHeight);
+  }//
+
+  if (turnONstroke==true) {
+    fill(turquoise);
+    colorMode(turquoise);
+    rect(blueButtonX, blueButtonY, blueButtonWidth, blueButtonHeight);
+    fill(resetWhite);
+  }
+
+  if (turnONblue==true) {
+
+    fill(blue);
+    noStroke();
+    rect(blueButtonX, blueButtonY, blueButtonWidth, blueButtonHeight);
+  } else {
+    fill(turquoise);
+    rect(blueButtonX, blueButtonY, blueButtonWidth, blueButtonHeight);
+  }//
+
+  //
+  //
+  //
+
+  if (turnONred==true) {
+
+    fill(red);
+    stroke(red);
+    if (draw==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight)  
+      if (draw==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight) line( mouseX, mouseY, pmouseX, pmouseY );
+  } //End Line Draw
+  //
+  if (turnONred==true) {
+
+    fill(red);
+    stroke(red);
+    if (draw1==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight)  
+      if (draw1==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight) ellipse( mouseX, mouseY, drawingDiameter, drawingDiameter );
+  }
+  if (turnONred==true) {
+
+    fill(red);
+    stroke(red);
+    if (draw2==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight)  
+      if (draw2==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight) rect (  mouseX, mouseY, squareWidth, squareHeight );
+  }
+  //
+  if (mouseX>=redButtonX && mouseX<=redButtonX+redButtonWidth && mouseY>=redButtonY && mouseY<=redButtonY+redButtonHeight) {
+    println("Red Button Enabled");
+    if (turnONred==false) {
+      turnONred=true;
+    } else {
+      turnONred=false;
+    }
+  }
+  if (mouseX>=redButtonX && mouseX<=redButtonX+redButtonWidth && mouseY>=redButtonY && mouseY<=redButtonY+redButtonHeight) {
+    noStroke();
+    fill(Darkred);
+    rect(redButtonX, redButtonY, redButtonWidth, redButtonHeight);
+  } else {
+
+    noStroke();
+    fill(red);
+    rect(redButtonX, redButtonY, redButtonWidth, redButtonHeight);
+  }
+  //
+  if (turnONred==true) {
+
+    fill(Darkred);
+    noStroke();
+    rect(redButtonX, redButtonY, redButtonWidth, redButtonHeight);
+  } else {
+    fill(red);
+    rect(redButtonX, redButtonY, redButtonWidth, redButtonHeight);
+  }//
+
+  if (turnONstroke==true) {
+    fill(red);
+    colorMode(red);
+    rect(redButtonX, redButtonY, redButtonWidth, redButtonHeight);
+    fill(resetWhite);
+  }
+
+  if (turnONred==true) {
+
+    fill(Darkred);
+    noStroke();
+    rect(redButtonX, redButtonY, redButtonWidth, redButtonHeight);
+  } else {
+    fill(red);
+    rect(redButtonX, redButtonY, redButtonWidth, redButtonHeight);
+  }//
 
 
   //
-  //Drawing tool, combined boolean
-  fill (colorOfDrawingTool);
-  stroke(colorOfDrawingTool);
-  if (drawOnPaper==true && draw==true && mouseX>=drawingSurfaceX && mouseX<= drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<=drawingSurfaceY+drawingSurfaceHeight)  line(mouseX, mouseY, pmouseX, pmouseY) ;//End Line Draw
-  if (drawOnPaper==true && draw==true && mouseX>=drawingSurfaceX && mouseX<= drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<=drawingSurfaceY+drawingSurfaceHeight) ellipse(mouseX, mouseY, drawingDiameter, drawingDiameter);
-  if (drawOnPaper==false && draw==true && mouseX>=BUTTONbackgroundImage3X+BUTTONbackgroundImageWidth && mouseX<=appWidth && mouseY>=appHeight*0 && mouseY<=appHeight) line(mouseX, mouseY, pmouseX, pmouseY) ;
-  if (drawOnPaper==false && draw==true && mouseX>=BUTTONbackgroundImage3X+BUTTONbackgroundImageWidth && mouseX<=appWidth && mouseY>=appHeight*0 && mouseY<=appHeight) ellipse(mouseX, mouseY, drawingDiameter, drawingDiameter);
-  if (drawOnPaper==false && draw==true && mouseX>=appWidth*0 && mouseX<=appWidth && mouseY>=toolBarY+toolBarHeight+(roundedEdges) && mouseY<=appHeight) line(mouseX, mouseY, pmouseX, pmouseY) ;
-  if (drawOnPaper==false && draw==true && mouseX>=appWidth*0 && mouseX<=appWidth && mouseY>=toolBarY+toolBarHeight+(roundedEdges) && mouseY<=appHeight) ellipse(mouseX, mouseY, drawingDiameter, drawingDiameter);
+  //
+  //
+
+  if (turnONblack==true) {
+
+    fill(black);
+    stroke(black);
+    if (draw==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight)  
+      if (draw==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight) line( mouseX, mouseY, pmouseX, pmouseY );
+  } //End Line Draw
+  //
+  if (turnONblack==true) {
+
+    fill(black);
+    stroke(black);
+    if (draw1==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight)  
+      if (draw1==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight) ellipse( mouseX, mouseY, drawingDiameter, drawingDiameter );
+  }
+  if (turnONblack==true) {
+
+    fill(black);
+    stroke(black);
+    if (draw2==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight)  
+      if (draw2==true && mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<= drawingSurfaceY+drawingSurfaceHeight) rect (  mouseX, mouseY, squareWidth, squareHeight );
+  }
+  //
+  if (mouseX>=blackButtonX && mouseX<=blackButtonX+blackButtonWidth && mouseY>=blackButtonY && mouseY<=blackButtonY+blackButtonHeight) {
+    println("Black Button Enabled");
+    if (turnONblack==false) {
+      turnONblack=true;
+    } else {
+      turnONblack=false;
+    }
+  }
+  if (mouseX>=blackButtonX && mouseX<=blackButtonX+blackButtonWidth && mouseY>=blackButtonY && mouseY<=blackButtonY+blackButtonHeight) {
+    noStroke();
+    fill(black);
+    rect(blackButtonX, blackButtonY, blackButtonWidth, blackButtonHeight);
+  } else {
+
+    noStroke();
+    fill(gray);
+    rect(blackButtonX, blackButtonY, blackButtonWidth, blackButtonHeight);
+  }
+  //
+  if (turnONblack==true) {
+
+    fill(black);
+    noStroke();
+    rect(blackButtonX, blackButtonY, blackButtonWidth, blackButtonHeight);
+  } else {
+    fill(gray);
+    rect(blackButtonX, blackButtonY, blackButtonWidth, blackButtonHeight);
+  }//
+
+  if (turnONstroke==true) {
+    fill(gray);
+    colorMode(black);
+    rect(blackButtonX, blackButtonY, blackButtonWidth, blackButtonHeight);
+    fill(resetWhite);
+  }
+
+  if (turnONblack==true) {
+
+    fill(black);
+    noStroke();
+    rect(blackButtonX, blackButtonY, blackButtonWidth, blackButtonHeight);
+  } else {
+    fill(gray);
+    rect(blackButtonX, blackButtonY, blackButtonWidth, blackButtonHeight);
+  }//
+}
+
+
+//End draw
+
+void keyPressed() 
+{
+  //Only press a number for this code below
+  if ( key=='1' || key=='9' ) {//Looping
+    if ( key == '1' ) println ("Looping 1 time");
+    if ( key == '9' ) println ("Looping 9 times");
+    String keystr = String.valueOf(key);
+    println("Number of Repeats is", keystr);
+    int num = int(keystr);
+    song[currentSong].loop(num);
+  }//End loop
+
+
+
+  //Play-Paused button
+  if ( key=='l' || key=='L') song[currentSong].loop();
+  if ( key>='4' && key!='9') println("I do not loop that much! Try again.");
+  //
+  if ( key=='p' || key=='P' ) { 
+    if ( song[currentSong].isPlaying() ) {
+      song[currentSong].pause();
+    } else if ( song[currentSong].position() >= song[currentSong].length() - song[currentSong].length()*1/6 ) { //Special situation
+      song[currentSong].rewind();
+      song[currentSong].play();
+    } else {
+      song[currentSong].play();
+    }
+  }//End Play-Paused button
+
+  if ( key=='f' || key=='F' ) song[currentSong].skip(1000); //skip forward
+  if ( key=='r' || key=='R' ) song[currentSong].skip(-1000); //skip backward
 
   //
-  /*
-  if (mouseX>=quitButtonX && mouseX<= quitButtonX+quitButtonWidth && mouseY>=quitButtonY && mouseY<=quitButtonY+quitButtonHeight) {
-   quitButtonColor=purple;
-   quitTextColor=whiteReset;
-   } else {
-   quitButtonColor=lightPink;
-   quitTextColor=black;
-   }
-   
-   fill(quitButtonColor);
-   rect(quitButtonX, quitButtonY, quitButtonWidth, quitButtonHeight);
-   fill(quitTextColor);
-   textAlign(CENTER, CENTER);
-   textFont(quitButtonFont, 25);
-   text(quitButtonText, quitButtonX, quitButtonY, quitButtonWidth, quitButtonHeight);
-   fill(whiteReset);
-   //
-   //Second rectangle with more text
-   fill(secondTextButtonColor);
-   rect(secondTextX, secontTextY, secondTextWidth, secondTextHeight);
-   fill(black); 
-   textAlign(CENTER, CENTER);
-   textFont(secondTextButtonFont, 14);
-   text(secondTextButtonText, secondTextX, secontTextY, secondTextWidth, secondTextHeight);
-   fill(whiteReset);
-   */
-}//End draw
-//
-void keyPressed () {
-  if (keyCode=='/') exit();
+
+  if ( key=='m' || key=='M' ) { //Mute
+    if ( song[currentSong].isMuted() ) {
+      song[currentSong].unmute();
+    } else {
+      song[currentSong].mute();
+    }
+  }//End Mute
+
+  //STOP
+  if ( key=='s' || key=='S' ) {
+    if ( song[currentSong].isPlaying() ) {
+      song[currentSong].pause();
+      song[currentSong].rewind();
+    } else {
+      song[currentSong].rewind();
+    }
+  }//End STOP button
+
+  //
+
+  if ( key=='n' || key=='N' ) {//Next Button
+    if ( song [currentSong].isPlaying() ) {
+      song[currentSong].pause();
+      song[currentSong].rewind();
+      nextButtonArrayCatch();
+      song[currentSong].play();
+    } else {
+      song[currentSong].rewind();
+      nextButtonArrayCatch();
+      song[currentSong].play();
+    }
+  }//End Next Button
+
+  if (  key=='z' || key=='Z' ) {
+    if ( song [currentSong].isPlaying() ) {
+      song[currentSong].pause();
+      song[currentSong].rewind();
+      backButtonArrayCatch();
+      song[currentSong].play();
+    } else {
+      song[currentSong].rewind();
+      backButtonArrayCatch();
+      song[currentSong].play();
+    }
+  } //End Back Button
+
+  if (  key=='d' || key=='D' ) {
+    println("Gain is", song[currentSong].getGain());
+    gain = gain+song[currentSong].getGain();
+    song[currentSong].setGain(gain);
+  }
+  //End Amplify Button
+
+
+  if (  key=='a' || key=='A' ) AutoPlay(); //End AutoPlay Button 
+
+  if (  key=='f' || key=='F' ) previousButton(); //End Song Skip Button 
+  //Note it sometimes works
 }//End keyPressed
-//
-void mousePressed () {
 
-
-  //
-  //Paper button, and enabling ink
-
-  if (mouseX>= BUTTONpaperX && mouseX<= BUTTONpaperX+BUTTONpaperWidth && mouseY>=BUTTONpaperY && mouseY<=BUTTONpaperY+BUTTONpaperHeight) {
-    if (paper==false) paper=true;
-    drawOnPaper=true;
-  }
-  //To stop drawing while on paper
-  if (mouseX>=drawingSurfaceX && mouseX<= drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<=drawingSurfaceY+drawingSurfaceHeight) {
-    if (drawOnPaper==true) {
-    
-  if (draw==true) {
-  draw=false;
-  } else {
-   draw=true;
-  }
-  
-  }
-  
-  }
-  //To stop drawing while on background 
-  if (mouseX>=appWidth*0 && mouseX<=appWidth && mouseY>=toolBarY+toolBarHeight+(roundedEdges) && mouseY<=appHeight) {
-  
-  if (drawOnPaper==false) {
-    
-    if(draw==true) {
-    draw=false;
+void mousePressed()
+{
+  //Paper-Button
+  if ( mouseX>=drawingSurfaceX && mouseX<=drawingSurfaceX+drawingSurfaceWidth && mouseY>=drawingSurfaceY && mouseY<=drawingSurfaceY+drawingSurfaceHeight ) {
+    if (draw == false) {
+      draw = true;
     } else {
-    draw=true;
-    }
-  
+      draw = false;
+    }//End draw Boolean
   }
-  
-  }
-  
-    if (mouseX>=BUTTONbackgroundImage3X+BUTTONbackgroundImageWidth && mouseX<=appWidth && mouseY>=appHeight*0 && mouseY<=appHeight) {
-  
-  if (drawOnPaper==false) {
-    
-    if(draw==true) {
-    draw=false;
+  soundEffect.pause();
+  soundEffect.rewind();
+  soundEffect.play();//Button Paper (Drawing Surface)
+
+  //
+
+  if ( mouseX>=quitButtonX && mouseX<=quitButtonX+quitButtonWidth && mouseY>=quitButtonY && mouseY<=quitButtonY+quitButtonHeight ) exit();     
+  soundEffect.pause();
+  soundEffect.rewind();
+  soundEffect.play();
+  if ( mouseX>=paperButtonX && mouseX<=paperButtonX+paperButtonWidth && mouseY>=paperButtonY && mouseY<=paperButtonY+paperButtonHeight ) paper=true;
+  soundEffect.pause();
+  soundEffect.rewind();
+  soundEffect.play();
+
+  if ( draw=true && mouseX>=lineButtonX && mouseX<=lineButtonX+lineButtonWidth && mouseY>=lineButtonY && mouseY<=lineButtonY+lineButtonHeight ) line( mouseX, mouseY, pmouseX, pmouseY ); 
+  soundEffect.pause();
+  soundEffect.rewind();
+  soundEffect.play();
+  if ( draw1=true && mouseX>=ellipseButtonX && mouseX<=ellipseButtonX+ellipseButtonWidth && mouseY>=ellipseButtonY && mouseY<=ellipseButtonY+ellipseButtonHeight ) ellipse( mouseX, mouseY, drawingDiameter, drawingDiameter );
+  soundEffect.pause();
+  soundEffect.rewind();
+  soundEffect.play();
+  if ( draw2=true && mouseX>=squareButtonX && mouseX<=squareButtonX+squareButtonWidth && mouseY>=squareButtonY && mouseY<=squareButtonY+squareButtonHeight ) rect (  mouseX, mouseY, squareWidth, squareHeight );
+  soundEffect.pause();
+  soundEffect.rewind();
+  soundEffect.play();
+  if ( draw3=true && mouseX>=eraserButtonX && mouseX<=eraserButtonX+eraserButtonWidth && mouseY>=eraserButtonY && mouseY<=eraserButtonY+eraserButtonHeight) ellipse ( mouseX, mouseY, drawingDiameter1, drawingDiameter1 );
+  soundEffect.pause();
+  soundEffect.rewind();
+  soundEffect.play();
+  //
+  if ( mouseX>=playButtonX && mouseX<=playButtonX+playButtonWidth && mouseY>=playButtonY && mouseY<=playButtonY+playButtonHeight ) {     
+    if ( song[currentSong].isPlaying() ) {
+      song[currentSong].pause();
+    } else if ( song[currentSong].position() >= song[currentSong].length() - song[currentSong].length()*1/6 ) { //Special situation
+      song[currentSong].rewind();
+      song[currentSong].play();
     } else {
-    draw=true;
+      song[currentSong].play();
     }
-  
   }
-  
+  soundEffect.pause();
+  soundEffect.rewind();
+  soundEffect.play();
+  //End Play-Paused button
+
+  if ( mouseX>=reverseButtonX && mouseX<=reverseButtonX+reverseButtonWidth && mouseY>=reverseButtonY && mouseY<=reverseButtonY+reverseButtonHeight ) song[currentSong].skip(-1000);
+  soundEffect.pause();
+  soundEffect.rewind();
+  soundEffect.play();
+  if ( mouseX>=forwardButtonX && mouseX<=forwardButtonX+forwardButtonWidth && mouseY>=forwardButtonY && mouseY<=forwardButtonY+forwardButtonHeight ) song[currentSong].skip(1000);
+  soundEffect.pause();
+  soundEffect.rewind();
+  soundEffect.play();
+
+  if ( mouseX>=muteButtonX && mouseX<=muteButtonX+muteButtonWidth && mouseY>=muteButtonY && mouseY<=muteButtonY+muteButtonHeight ) { //Mute
+    if ( song[currentSong].isMuted() ) {
+      song[currentSong].unmute();
+    } else {
+      song[currentSong].mute();
+    }
   }
-  
-  
-  
-  
-  //Button that allows the drawing of ink: paper
-  //
-  //if (mouseX>=quitButtonX && mouseX<= quitButtonX+quitButtonWidth && mouseY>=quitButtonY && mouseY<=quitButtonY+quitButtonHeight) exit();
-  //
-  BackgroundButtonsMousepressed ();
-  
+  soundEffect.pause();
+  soundEffect.rewind();
+  soundEffect.play();
+  //End Mute
 
-   //To allow color/drawing to show up on the background 
-   if (mouseX>=appWidth*0 && mouseX<=appWidth && mouseY>=toolBarY+toolBarHeight+(roundedEdges) && mouseY<=appHeight) {
-   
-   if (drawOnPaper==false) {
-   originalGreyBackgroundON=false;
-   backgroundImage1ON=false;
-   backgroundImage2ON=false;
-   backgroundImage3ON=false;
-   }
-   }
-   if (mouseX>=BUTTONbackgroundImage3X+BUTTONbackgroundImageWidth && mouseX<=appWidth && mouseY>=appHeight*0 && mouseY<=appHeight) {
-   
-   if (drawOnPaper==false) {
-   originalGreyBackgroundON=false;
-   backgroundImage1ON=false;
-   backgroundImage2ON=false;
-   backgroundImage3ON=false;
-   }
-   }
-   
+  if ( mouseX>=stopButtonX && mouseX<=stopButtonX+stopButtonWidth && mouseY>=stopButtonY && mouseY<=stopButtonY+stopButtonHeight ) {    
+    if ( song[currentSong].isPlaying() ) {
+      song[currentSong].pause();
+      song[currentSong].rewind();
+    } else {
+      song[currentSong].rewind();
+    }
+  }
+  soundEffect.pause();
+  soundEffect.rewind();
+  soundEffect.play();
+  //End STOP button
 
-  //Color of drawing tools mousePressed
+  if ( mouseX>=loopButtonX && mouseX<=loopButtonX+loopButtonWidth && mouseY>=loopButtonY && mouseY<=loopButtonY+loopButtonHeight ) song[currentSong].loop();
+  if ( mouseX>=nextButtonX && mouseX<=nextButtonX+nextButtonWidth && mouseY>=nextButtonY && mouseY<=nextButtonY+nextButtonHeight ) {
+    if ( song [currentSong].isPlaying() ) {
+      song[currentSong].pause();
+      song[currentSong].rewind();
+      nextButtonArrayCatch();
+      song[currentSong].play();
+    } else {
+      song[currentSong].rewind();
+      nextButtonArrayCatch();
+      song[currentSong].play();
+    }
+  }
+  soundEffect.pause();
+  soundEffect.rewind();
+  soundEffect.play();
+  //End Next Button
 
-  //color red
+  if ( mouseX>=backButtonX && mouseX<=backButtonX+backButtonWidth && mouseY>=backButtonY && mouseY<=backButtonY+backButtonHeight ) {
+    if ( song [currentSong].isPlaying() ) {
+      song[currentSong].pause();
+      song[currentSong].rewind();
+      backButtonArrayCatch();
+      song[currentSong].play();
+    } else {
+      song[currentSong].rewind();
+      backButtonArrayCatch();
+      song[currentSong].play();
+    }
+  } 
+  soundEffect.pause();
+  soundEffect.rewind();
+  soundEffect.play();
+  //End Back Button
 
-  if (mouseX>=BUTTONredDrawingColorX && mouseX<=BUTTONredDrawingColorX+colorButtonWidth 
-    && mouseY>=BUTTONredDrawingColorY && mouseY<=BUTTONredDrawingColorY+colorButtonHeight) colorOfDrawingTool=redBUTTONcolor;
+  if ( mouseX>=skipButtonX && mouseX<=skipButtonX+skipButtonWidth && mouseY>=skipButtonY && mouseY<=skipButtonY+skipButtonHeight ) skipSong(); 
+  soundEffect.pause();
+  soundEffect.rewind();
+  soundEffect.play();
+  //End Song Skip Button 
 
+  if ( mouseX>=amplifyButtonX && mouseX<=amplifyButtonX+amplifyButtonWidth && mouseY>=amplifyButtonY && mouseY<=amplifyButtonY+amplifyButtonHeight ) {
+    println("Gain is", song[currentSong].getGain());
+    gain = gain+song[currentSong].getGain();
+    song[currentSong].setGain(gain);
+    soundEffect.pause();
+    soundEffect.rewind();
+    soundEffect.play();
+  }
+  //End Amplify Button
+}//End mousepressed
 
-
-  //color orange
-
-  if (mouseX>=BUTTONorangeDrawingColorX && mouseX<=BUTTONorangeDrawingColorX+colorButtonWidth 
-    && mouseY>=BUTTONorangeDrawingColorY && mouseY<=BUTTONorangeDrawingColorY+colorButtonHeight)  colorOfDrawingTool=orangeBUTTONcolor;
-
-
-
-  //color yellow
-  if (mouseX>=BUTTONyellowDrawingColorX && mouseX<=BUTTONyellowDrawingColorX+colorButtonWidth 
-    && mouseY>=BUTTONyellowDrawingColorY && mouseY<=BUTTONyellowDrawingColorY+colorButtonHeight) colorOfDrawingTool=yellowBUTTONcolor;
-
-
-  //color green
-  if (mouseX>=BUTTONgreenDrawingColorX && mouseX<=BUTTONgreenDrawingColorX+colorButtonWidth 
-    && mouseY>=BUTTONgreenDrawingColorY && mouseY<=BUTTONgreenDrawingColorY+colorButtonHeight) colorOfDrawingTool=greenBUTTONcolor;
-
-
-
-  //color blue
-  if (mouseX>=BUTTONblueDrawingColorX && mouseX<=BUTTONblueDrawingColorX+colorButtonWidth 
-    && mouseY>=BUTTONblueDrawingColorY && mouseY<=BUTTONblueDrawingColorY+colorButtonHeight) colorOfDrawingTool=blueBUTTONcolor;
-
-
-
-  //color purple
-  if (mouseX>=BUTTONpurpleDrawingColorX && mouseX<=BUTTONpurpleDrawingColorX+colorButtonWidth 
-    && mouseY>=BUTTONpurpleDrawingColorY && mouseY<=BUTTONpurpleDrawingColorY+colorButtonHeight) colorOfDrawingTool=purpleBUTTONcolor;
-
-
-  //color grey
-  if (mouseX>=BUTTONgreyDrawingColorX && mouseX<=BUTTONgreyDrawingColorX+colorButtonWidth 
-    && mouseY>=BUTTONgreyDrawingColorY && mouseY<=BUTTONgreyDrawingColorY+colorButtonHeight) colorOfDrawingTool=greyBUTTONcolor;
-
-
-  //color black
-  if (mouseX>=BUTTONblackDrawingColorX && mouseX<=BUTTONblackDrawingColorX+colorButtonWidth 
-    && mouseY>=BUTTONblackDrawingColorY && mouseY<=BUTTONblackDrawingColorY+colorButtonHeight)  colorOfDrawingTool=blackBUTTONcolor;
-}//End mousePressed
 //
-//End MAIN program
+
+//End Main Program
