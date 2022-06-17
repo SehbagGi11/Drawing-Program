@@ -46,10 +46,10 @@ void setup() {
   pic3 = loadImage("img00 (2).png");
   minim = new Minim(this);
   //
-  song[currentSong] = minim.loadFile("Music/05. Mii Parade.mp3");
-  song[currentSong+=1] = minim.loadFile("Music/06. Shop Channel Title.mp3");
-  song[currentSong+=1] = minim.loadFile("Music/07. Shop Channel.mp3");
-  song[currentSong+=1] = minim.loadFile("Music/M14. Results (Wii Sports).mp3");
+  song[currentSong] = minim.loadFile("DownLoaded/Khalid - Better (Official Video).mp3");
+  song[currentSong+=1] = minim.loadFile("DownLoaded/It's Only Worth It if You Work for It - NEFFEX.mp3");
+  song[currentSong+=1] = minim.loadFile("DownLoaded/Built to Last (Instrumental) - NEFFEX.mp3");
+  song[currentSong+=1] = minim.loadFile("DownLoaded/Danger Snow - Dan Henig.mp3");
   //
   currentSong = numberOfSongs - numberOfSongs;
   for (int i=currentSong; i<numberOfSongs; i++) {
