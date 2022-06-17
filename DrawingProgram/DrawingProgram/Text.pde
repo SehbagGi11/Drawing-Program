@@ -1,17 +1,54 @@
-//Global Variables
+String buttonText = "X";
+String buttonText2 = "Reset";
+String buttonText3 = "Eraser";
+String buttonText4 = "Line Art";
+String buttonText5 = "Line Art2";
+String buttonText6 = "Line Art3";
 PFont font;
-int initialFontSize=55, size=25;
-String quitButtonText = "QUIT";
-String paperButtonText = "Reset Paper";
-String ellipseButtonText = "Ellipse Pattern";
-String lineButtonText = "Pencil Tool";
-String squareButtonText = "Square Pattern";
-String eraser = "Eraser";
-String textBox = "Hover over the colour button for a few seconds until it becomes darker to activate them, then proceed to click the tools to change the colour. Deactivate a colour by hovering over it before selecting another colour.";
-String textBox1 = "mouseClick anytime to cancel a tool!";
-//
-void textSetup()
-{
-    font = createFont("Arial", initialFontSize);
+
+void textSetup() { 
+  font = createFont ("Arial", 55);
 }
-//End textSetup
+
+void textDraw() { 
+  fill(black); 
+  textAlign (CENTER, CENTER); 
+  //textFont(font, 20);
+  text(buttonText, quitButtonX, quitButtonY, quitButtonWidth, quitButtonHeight);
+  fill(255);
+}
+
+void textDraw2() {
+  fill(black);
+  textAlign (CENTER, CENTER);
+  text(buttonText2, resetX, resetY, resetW, resetH);
+  fill(255);
+}
+
+void textDraw3() {
+  fill(white);
+  textAlign (CENTER, CENTER);
+  text(buttonText3, EraserX, EraserY, EraserW, EraserH);
+  fill(255);
+}
+
+void textDraw4() {
+  fill(white);
+  textAlign (CENTER, CENTER);
+  text(buttonText4, laX, laY, laW, laH);
+  fill(255);
+}
+
+void textDraw5() {
+  fill(white);
+  textAlign (CENTER, CENTER);
+  text(buttonText5, la2X, la2Y, la2W, la2H);
+  fill(255);
+}
+
+void textDraw6() {
+  fill(white);
+  textAlign (CENTER, CENTER);
+  text(buttonText6, la3X, la3Y, la3W, la3H);
+  fill(255);
+}

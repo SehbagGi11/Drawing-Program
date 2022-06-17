@@ -1,174 +1,306 @@
-void population()
-{
-  //Population
-  drawingSurfaceX = displayWidth*0;
-  drawingSurfaceY = displayHeight*0;
-  drawingSurfaceWidth = displayWidth*4/5;
-  drawingSurfaceHeight = displayHeight;
-  drawingDiameter = displayWidth*1/80;
-  drawingDiameter1 = displayWidth*1/30;
+ void population() {
+  drawingSurfaceX = width*1/12;
+  drawingSurfaceY = height*2/12;
+  drawingSurfaceWidth = width*6/8;
+  drawingSurfaceHeight = height*6/8;
+  drawingDiameter = width*1/100;
   //
-  quitButtonX = displayWidth*4/5;
-  quitButtonY = displayHeight*0;
-  quitButtonWidth = displayWidth*1/10;
-  quitButtonHeight = displayHeight*1/10;
+  redX = width*1/12;
+  redY = height*1/16;
+  redW = width*1/40;
+  redH = height*1/30;
   //
-  paperButtonX = quitButtonX; 
-  paperButtonY = displayHeight*1/10;
-  paperButtonWidth = quitButtonWidth;
-  paperButtonHeight = quitButtonHeight; 
+  orangeX = width*1.3/12;
+  orangeY = height*1/16;
+  orangeW = width*1/40;
+  orangeH = height*1/30;
   //
-  ellipseButtonX = quitButtonX; 
-  ellipseButtonY = displayHeight*2/10;
-  ellipseButtonWidth = quitButtonWidth; 
-  ellipseButtonHeight = quitButtonHeight;
+  yellowX = width*1.6/12;
+  yellowY = height*1/16;
+  yellowW = width*1/40;
+  yellowH = height*1/30;
   //
-  lineButtonX = displayWidth*4.5/5;
-  lineButtonY = displayHeight*2/10;
-  lineButtonWidth = quitButtonWidth;
-  lineButtonHeight = quitButtonHeight;
+  greenX = width*1.9/12;
+  greenY = height*1/16;
+  greenW = width*1/40;
+  greenH = height*1/30;
   //
-  squareButtonX = displayWidth*4.5/5;
-  squareButtonY = displayHeight*1/10;
-  squareButtonWidth = quitButtonWidth;
-  squareButtonHeight = quitButtonHeight;
+  blueX = width*2.2/12;
+  blueY = height*1/16;
+  blueW = width*1/40;
+  blueH = height*1/30;
   //
-  squareWidth = displayWidth*1/30;
-  squareHeight = displayHeight*1/30;
+  pinkX = width*2.5/12;
+  pinkY = height*1/16;
+  pinkW = width*1/40;
+  pinkH = height*1/30;
   //
-  playButtonX = displayWidth*4.4/5;
-  playButtonY = displayHeight*4.2/5;
-  playButtonWidth = displayWidth*1/20;
-  playButtonHeight = displayHeight*1/20;
+  purpleX = width*1.6/12;
+  purpleY = height*1.5/16;
+  purpleW = width*1/40;
+  purpleH = height*1/30;
   //
-  forwardButtonX = displayWidth*4.8/5;
-  forwardButtonY = playButtonY;
-  forwardButtonWidth = displayWidth*1/20;
-  forwardButtonHeight = displayHeight*1/20;
+  blackX = width*1.9/12;
+  blackY = height*1.5/16;
+  blackW = width*1/40;
+  blackH = height*1/30;
   //
-  reverseButtonX = displayWidth*4/5;
-  reverseButtonY = playButtonY;
-  reverseButtonWidth = displayWidth*1/20;
-  reverseButtonHeight = displayHeight*1/20;
+  tealX = width*1/12;
+  tealY = height*1.5/16;
+  tealW = width*1/40;
+  tealH = height*1/30;
   //
-  muteButtonX = reverseButtonX;
-  muteButtonY = displayHeight*4.5/5; 
-  muteButtonWidth = displayWidth*1/20;
-  muteButtonHeight = displayHeight*1/20;
+  limeX = width*1.3/12;
+  limeY = height*1.5/16;
+  limeW = width*1/40;
+  limeH = height*1/30;
   //
-  stopButtonX = playButtonX;
-  stopButtonY = muteButtonY;
-  stopButtonWidth = muteButtonWidth;
-  stopButtonHeight = muteButtonHeight;
+  greyX = width*2.2/12;
+  greyY = height*1.13/12;
+  greyW = width*1/40;
+  greyH = height*1/30;
   //
-  loopButtonX = forwardButtonX;
-  loopButtonY = muteButtonY;
-  loopButtonWidth = muteButtonWidth;
-  loopButtonHeight = muteButtonHeight;
+  whiteX = width*2.5/12;
+  whiteY = height*1.13/12;
+  whiteW = width*1/40;
+  whiteH = height*1/30;
   //
-  nextButtonX = forwardButtonX;
-  nextButtonY = displayHeight*4.8/5;
-  nextButtonWidth = muteButtonWidth;
-  nextButtonHeight= muteButtonHeight;
+  quitButtonX = width*18.3/19;
+  quitButtonY = height*0.1/300;
+  quitButtonWidth = width*1/27;
+  quitButtonHeight = height*1/27;
   //
-  backButtonX = reverseButtonX;
-  backButtonY = nextButtonY;
-  backButtonWidth = muteButtonWidth;
-  backButtonHeight = muteButtonHeight;
+  backgroundX = width*0.1/300;
+  backgroundY = height*0.1/300;
+  backgroundW = width*1;
+  backgroundH = height*1;
   //
-  skipButtonX = playButtonX;
-  skipButtonY = nextButtonY;
-  skipButtonWidth = muteButtonWidth;
-  skipButtonHeight = muteButtonHeight;
+  resetX = width*5/12;
+  resetY = height*0.7/16;
+  resetW = width*1/30;
+  resetH = height*1/30;
   //
-  amplifyButtonX = forwardButtonX;
-  amplifyButtonY = displayHeight*2.65/5;
-  amplifyButtonWidth = muteButtonWidth;
-  amplifyButtonHeight = muteButtonHeight;
+  thick1X = width*3.85/12;
+  thick1Y = height*0.7/16;
+  thick1W = width*1/16;
+  thick1H = height*1/120;
   //
-  rectXPic1 = displayWidth*4.4/5;
-  rectYPic1 = displayHeight*4.2/5;
-  rectWidthPic1 = displayWidth*1/20;
-  rectHeightPic1 = displayHeight*1/20;
+  thick2X = width*3.85/12;
+  thick2Y = height*1/16;
+  thick2W = width*1/16;
+  thick2H = height*1/60;
   //
-  rectXPic2 = reverseButtonX;
-  rectYPic2 = reverseButtonY;
-  rectWidthPic2 = reverseButtonWidth;
-  rectHeightPic2 = reverseButtonHeight;
+  thick3X = width*3.85/12;
+  thick3Y = height*1.5/16;
+  thick3W = width*1/16;
+  thick3H = height*1/30;
   //
-  rectXPic3 = forwardButtonX;
-  rectYPic3 = forwardButtonY;
-  rectWidthPic3 = forwardButtonWidth;
-  rectHeightPic3 = forwardButtonHeight;
+  EraserX = width*5/12;
+  EraserY = height*1.5/16;
+  EraserW = width*1/30;
+  EraserH = height*1/30;
   //
-  rectXPic4 = muteButtonX;
-  rectYPic4 = muteButtonY;
-  rectWidthPic4 = muteButtonWidth;
-  rectHeightPic4 = muteButtonHeight;
+  WriteX = width*6/12;
+  WriteY = height*0.5/12;
+  WriteW = width*1/50;
+  WriteH = height*1/10;
   //
-  rectXPic5 = stopButtonX;
-  rectYPic5 = stopButtonY;
-  rectWidthPic5 = stopButtonWidth;
-  rectHeightPic5 = stopButtonHeight;
+  PenRectX = width*6.06/12;
+  PenRectY = height*0.6/12;
+  PenRectW = width*1/100;
+  PenRectH = height*1/14;
   //
-  rectXPic6 = loopButtonX;
-  rectYPic6 = loopButtonY;
-  rectWidthPic6 = loopButtonWidth;
-  rectHeightPic6 = loopButtonHeight;
+  PenTriX1 = width*6.127/12;
+  PenTriY1 = height*1.6/12;
+  PenTriX2 = width*6.175/12;
+  PenTriY2 = height*1.47/12;
+  PenTriX3 = width*6.07/12;
+  PenTriY3 = PenTriY2;
   //
-  rectXPic7 = nextButtonX;
-  rectYPic7 = nextButtonY;
-  rectWidthPic7 = nextButtonWidth;
-  rectHeightPic7 = nextButtonHeight;
+  blankX = width*1/12;
+  blankY = height*2/12;
+  blankW = width*6/8;
+  blankH = height*6/8;
   //
-  rectXPic8 = backButtonX;
-  rectYPic8 = backButtonY;
-  rectWidthPic8 = backButtonWidth;
-  rectHeightPic8 = backButtonHeight;
+  play1X = width*10/15;
+  play1Y = height*0.5/15;
+  play2X = play1X;
+  play2Y = height*1/15;
+  play3X = width*10.25/15;
+  play3Y = height*0.75/15;
   //
-  rectXPic9 = skipButtonX;
-  rectYPic9 = skipButtonY;
-  rectWidthPic9 = skipButtonWidth;
-  rectHeightPic9 = skipButtonHeight;
+  fastA1X = width*10.5/15;
+  fastA1Y = play1Y;
+  fastA2X = fastA1X;
+  fastA2Y = play2Y;
+  fastA3X = width*10.75/15;
+  fastA3Y = play3Y;
   //
-  rectXPic10 = amplifyButtonX;
-  rectYPic10 = amplifyButtonY;
-  rectWidthPic10 = amplifyButtonWidth;
-  rectHeightPic10 = amplifyButtonHeight;
+  fastB1X = width*10.7/15;
+  fastB1Y = fastA1Y;
+  fastB2X = fastB1X;
+  fastB2Y = fastA2Y;
+  fastB3X = width*10.95/15;
+  fastB3Y = fastA3Y;
   //
-  eraserButtonX = displayWidth*4.5/5;
-  eraserButtonY = displayHeight*0;
-  eraserButtonWidth = quitButtonWidth;
-  eraserButtonHeight = quitButtonHeight;
+  rewA1X = width*9.75/15;
+  rewA1Y = fastA1Y;
+  rewA2X = width*9.45/15;
+  rewA2Y = fastA3Y;
+  rewA3X = rewA1X;
+  rewA3Y = fastA2Y;
   //
-  greenButtonX = displayWidth*4/5;
-  greenButtonY = displayHeight*1.75/5;
-  greenButtonWidth = displayWidth*1/20;
-  greenButtonHeight = displayHeight*1/20;
+  rewB1X = width*9.55/15;
+  rewB1Y = fastA1Y;
+  rewB2X = width*9.25/15;
+  rewB2Y = fastA3Y;
+  rewB3X = rewB1X;
+  rewB3Y = fastA2Y;
   //
-  blueButtonX = displayWidth*4.5/5;
-  blueButtonY = greenButtonY;
-  blueButtonWidth = greenButtonWidth;
-  blueButtonHeight = greenButtonHeight;
+  playCX = width*10.1/15;
+  playCY = height*0.75/15;
+  playCD = height*0.7/15;
   //
-  redButtonX = greenButtonX;
-  redButtonY = displayHeight*2.1/5;
-  redButtonWidth = greenButtonWidth;
-  redButtonHeight = greenButtonHeight;
+  stopX = width*9.95/15;
+  stopY = height*1.2/15;
+  stopW = width*0.3/15;
+  stopH = height*0.5/15;
   //
-  blackButtonX = displayWidth*4.5/5;
-  blackButtonY = redButtonY;
-  blackButtonWidth = greenButtonWidth;
-  blackButtonHeight = greenButtonHeight;
+  nextA1X = fastA1X;
+  nextA1Y = height*1.2/15;
+  nextA2X = nextA1X;
+  nextA2Y = height*1.7/15;
+  nextA3X = fastA3X;
+  nextA3Y = height*1.45/15;
   //
-  textBoxX = greenButtonX;
-  textBoxY = displayHeight*2.36/5;
-  textBoxWidth =  displayWidth*1/7;
-  textBoxHeight =  displayHeight*1/8;
+  nextBX = nextA3X;
+  nextBY = nextA1Y;
+  nextBW = width*0.1/15;
+  nextBH = height*0.5/15;
   //
-  textBoxX1 = quitButtonX;
-  textBoxY1 = displayHeight*1.53/5;
-  textBoxWidth1 =  displayWidth*1/10;
-  textBoxHeight1 =  displayHeight*1/25;
+  backA1X = rewA1X;
+  backA1Y = nextA1Y;
+  backA2X = rewA2X;
+  backA2Y = nextA3Y;
+  backA3X = rewA3X;
+  backA3Y = nextA2Y;
+  //
+  backBX = width*9.4/15;
+  backBY = backA1Y;
+  backBW = nextBW;
+  backBH = nextBH;
+  //
+  loopX = width*3.5/15;
+  loopY = height*11/15;
+  loopD = height*0.8/15;
+  //
+  fastrecX = fastA1X;
+  fastrecY = fastA1Y;
+  fastrecW = width*0.5/15;
+  fastrecH = height*0.5/15;
+  //
+  playrecX = width*9.95/15;
+  playrecY = height*0.5/15;
+  playrecW = width*0.3/15;
+  playrecH = height*0.5/15;
+  //
+  rewrecX = rewB2X;
+  rewrecY = fastA1Y;
+  rewrecW = width*0.5/15;
+  rewrecH = height*0.5/15;
+  //
+  looprecX = width*3.3/15;
+  looprecY = height*10.6/15;
+  looprecW = width*0.8/15;
+  looprecH = height*0.8/15;
+  //
+  nextrecX = fastA1X;
+  nextrecY = nextA1Y;
+  nextrecW = width*0.33/15;
+  nextrecH = height*0.5/15;
+  //
+  backrecX = backBX;
+  backrecY = backBY;
+  backrecW = width*0.33/15;
+  backrecH = height*0.5/15;
+  //
+  circBX = width*11.5/15;
+  circBY = height*1/15;
+  circBD = height*0.8/15;
+  //
+  crecX = width*11.25/15;
+  crecY = height*0.6/15;
+  crecW = width*0.5/15;
+  crecH = height*0.8/15;
+  //
+  circaX = width*7/15;
+  circaY = height*6.5/12;
+  circaD = width*3/8;
+  //
+  triBX1 = width*12.2/15;
+  triBY1 = height*0.6/15;
+  triBX2 = width*12.4/15;
+  triBY2 = height*1.4/15;
+  triBX3 = width*12/15;
+  triBY3 = triBY2;
+  //
+  trecX = triBX3;
+  trecY = triBY1;
+  trecW = width*0.4/15;
+  trecH = height*0.8/15;
+  //
+  triaX1 = width*7/15;
+  triaY1 = height*2.5/12;
+  triaX2 = width*8/12;
+  triaY2 = height*10/12;
+  triaX3 = width*3/12;
+  triaY3 = triaY2;
+  //
+  laX = width*11/15;
+  laY = height*1.7/15;
+  laW = width*0.5/15;
+  laH = height*0.5/15;
+  //
+  la2X = width*11.55/15;
+  la2Y = height*1.7/15;
+  la2W = width*0.5/15;
+  la2H = height*0.5/15;
+  //
+  la3X = width*12.12/15;
+  la3Y = height*1.7/15;
+  la3W = width*0.5/15;
+  la3H = height*0.5/15;
+  //
+  rectXPic1 = width*3.3/12;
+  rectYPic1 = height*2.7/12;
+  rectWidthPic1 = width*3/8; 
+  rectHeightPic1 = height*5/8;
+  picImageWidthRatio1 = 217.0/217.0; 
+  picImageHeightRatio1 = 232.0/217.0;
+  picX1 = rectXPic1;
+  picY1 = rectYPic1;
+  picWidth1 = rectWidthPic1 * picImageWidthRatio1; 
+  picHeight1 = picWidth1 * picImageHeightRatio1; 
+  //
+  rectXPic2 = width*3.3/12;
+  rectYPic2 = height*2.7/12;
+  rectWidthPic2 = width*3/8; 
+  rectHeightPic2 = height*5/8;
+  picImageWidthRatio2 = 197.0/197.0; 
+  picImageHeightRatio2 = 255.0/197.0;
+  picX2 = rectXPic2;
+  picY2 = rectYPic2;
+  picWidth2 = rectWidthPic2 * picImageWidthRatio2; 
+  picHeight2 = picWidth2 * picImageHeightRatio2;
+  //
+  rectXPic3 = width*3.3/12;
+  rectYPic3 = height*2.7/12;
+  rectWidthPic3 = width*3/8; 
+  rectHeightPic3 = height*5/8;
+  picImageWidthRatio3 = 255.0/255.0; 
+  picImageHeightRatio3 = 197.0/255.0;
+  picX3 = rectXPic3;
+  picY3 = rectYPic3;
+  picWidth3 = rectWidthPic3 * picImageWidthRatio3; 
+  picHeight3 = picWidth3 * picImageHeightRatio3;
 }
-//End population
